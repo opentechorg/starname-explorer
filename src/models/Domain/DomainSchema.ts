@@ -7,16 +7,19 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 
 export type DomainType = "open" | "closed";
 
-const DomainSchema: Schema = new Schema({
-  domain: { type: String, required: true, unique: true },
-  /** Bech32 admin address */
-  admin: { type: String, required: true },
-  type: { type: String, required: true },
-  /** Bech32 broker address */
-  broker: String,
-  /** Bech32 fee_payer address */
-  fee_payer: String,
-});
+const DomainSchema: Schema = new Schema(
+  {
+    domain: { type: String, required: true, unique: true },
+    /** Bech32 admin address */
+    admin: { type: String, required: true },
+    type: { type: String, required: true },
+    /** Bech32 broker address */
+    broker: String,
+    /** Bech32 fee_payer address */
+    fee_payer: String,
+  },
+  { timestamps: true },
+);
 
 export interface Domain {
   readonly domain: string;

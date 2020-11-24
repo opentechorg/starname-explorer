@@ -6,19 +6,21 @@
   "private": true,
   "scripts": {
     "dry-build": "tsc --noEmit",
-    "start": "ts-node src/index.ts",
-    "parse-genesis": "ts-node src/parse-genesis.ts",
+    "start": "yarn process-genesis && yarn process-live",
+    "process-live": "ts-node src/index.ts",
+    "process-genesis": "ts-node src/process-genesis.ts",
     "format": "prettier --write --loglevel warn './src/**/*.{ts,json,md,css}'",
     "lint": "eslint -c .eslintrc.js --max-warnings 0 'src/**/*.ts'",
     "lint:fix": "eslint -c .eslintrc.js 'src/**/*.ts' --fix"
   },
   "dependencies": {
     "@cosmjs/launchpad": "^0.23.1",
+    "@cosmjs/socket": "^0.23.1",
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.13",
-    "ts-node": "^9.0.0",
     "stream-chain": "^2.2.3",
     "stream-json": "^1.7.1",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
   },
   "devDependencies": {

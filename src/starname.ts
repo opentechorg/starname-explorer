@@ -6,7 +6,7 @@ import {
   MsgRenewDomain,
   MsgTransferAccount,
   MsgTransferDomainAll,
-} from "./msg";
+} from "./Transactions";
 
 export interface AccountNft {
   readonly domain: string;
@@ -27,9 +27,23 @@ export interface StarnameExtension {
     readonly accounts: (limit: number, page: number) => Promise<readonly MsgRegisterAccount[]>;
     readonly accountTransfers: (limit: number, page: number) => Promise<readonly MsgTransferAccount[]>;
     readonly txsCount: (query: (limit: number, page: number) => string) => Promise<number>;
+    readonly transactions: (
+      query: (limit: number, page: number) => string,
+      limit: number,
+      page: number,
+    ) => Promise<readonly Msg[]>;
     readonly query: (starname: string) => Promise<AccountNft>;
   };
 }
+
+/**
+ * Supported queries:
+ * - renew_domain
+ * - register_account
+ * - register_domain
+ * - transfer_domain
+ * - transfer_account
+ */
 
 export const getRegDomainQuery = (limit: number, page: number): string =>
   `message.action=register_domain&limit=${limit}&page=${page}`;
@@ -46,6 +60,9 @@ export const getAccountTransferQuery = (limit: number, page: number): string =>
 export const getDomainRenewsQuery = (limit: number, page: number): string =>
   `message.action=renew_domain&limit=${limit}&page=${page}`;
 
+export const getStarnameTransactionsQuery = (limit: number, page: number): string =>
+  `message.module=starname&limit=${limit}&page=${page}`;
+
 export function setupStarnameExtension(base: LcdClient): StarnameExtension {
   return {
     starname: {
@@ -54,6 +71,8 @@ export function setupStarnameExtension(base: LcdClient): StarnameExtension {
       domainRenews: getStarnameData<MsgRenewDomain>(base, getDomainRenewsQuery),
       accounts: getStarnameData<MsgRegisterAccount>(base, getRegAccountQuery),
       accountTransfers: getStarnameData<MsgTransferAccount>(base, getAccountTransferQuery),
+      transactions: async (query: (limit: number, page: number) => string, limit: number, page: number) =>
+        getStarnameData<Msg>(base, query)(limit, page),
       txsCount: async (query: (limit: number, page: number) => string) =>
         Number((await base.txsQuery(query(1, 1))).total_count),
       query: async (starname: string) =>

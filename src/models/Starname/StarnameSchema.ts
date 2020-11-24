@@ -15,7 +15,7 @@ const StarnameSchema: Schema = new Schema(
     metadata_uri: { type: String },
     valid_until: { type: Number },
   },
-  { toJSON: { virtuals: true } },
+  { toJSON: { virtuals: true }, timestamps: true },
 );
 
 StarnameSchema.virtual("domainRef", {
