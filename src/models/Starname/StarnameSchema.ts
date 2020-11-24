@@ -18,6 +18,8 @@ const StarnameSchema: Schema = new Schema(
   { toJSON: { virtuals: true }, timestamps: true },
 );
 
+StarnameSchema.index({ domain: 1, name: 1 }, { unique: true });
+
 StarnameSchema.virtual("domainRef", {
   ref: "Domain", // The model to use
   localField: "domain", // Find people where `localField`
