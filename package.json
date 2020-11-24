@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dry-build": "tsc --noEmit",
-    "build": "tsc --noEmit",
+    "build": "tsc",
     "start": "yarn process-genesis && yarn process-live",
     "process-live": "ts-node src/index.ts",
     "process-genesis": "ts-node src/process-genesis.ts",
