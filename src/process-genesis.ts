@@ -50,7 +50,7 @@ const processStarnames = async (): Promise<void> => {
   return new Promise((resolve) => {
     console.log("Processing starnames...");
     const pipeline = chain([
-      fs.createReadStream("genesis.json"),
+      fs.createReadStream("./assets/genesis.json"),
       parser(),
       pick({ filter: "app_state" }),
       pick({ filter: "starname" }),
