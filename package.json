@@ -7,8 +7,7 @@
   "scripts": {
     "dry-build": "tsc --noEmit",
     "build": "tsc",
-    "start": "yarn process-genesis && yarn process-live",
-    "process-live": "ts-node src/index.ts",
+    "start": "ts-node src/index.ts",
     "process-genesis": "ts-node src/process-genesis.ts",
     "format": "prettier --write --loglevel warn './src/**/*.{ts,json,md,css}'",
     "lint": "eslint -c .eslintrc.js --max-warnings 0 'src/**/*.ts'",
