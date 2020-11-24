@@ -79,7 +79,7 @@ const processStarnames = async (): Promise<void> => {
   });
 };
 
-mongoose.connect(`${process.env.DB_HOST_URI}/${process.env.DB_NAME}`, {
+mongoose.connect(`${process.env.DB_HOST_URL}/${process.env.DB_NAME}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
