@@ -1,7 +1,6 @@
 import { Msg } from "@cosmjs/launchpad";
+import { DomainSchemaModel, StarnameSchemaModel } from "@starname-explorer/shared";
 
-import DomainModel from "../models/Domain/DomainSchema";
-import StarnameModel from "../models/Starname/StarnameSchema";
 import { StarnameExtension } from "../starname";
 
 interface RegisterDomainValue {
@@ -28,13 +27,13 @@ export async function MsgRegisterDomainStore(
   domain: RegisterDomainValue,
   client: StarnameExtension,
 ): Promise<void> {
-  await DomainModel.updateOne({ domain: domain.domain }, domain as any, {
+  await DomainSchemaModel.updateOne({ domain: domain.domain }, domain as any, {
     upsert: true,
   });
 
   const domainDetails = await client.starname.query(`*${domain.domain}`);
 
-  await StarnameModel.updateOne(
+  await StarnameSchemaModel.updateOne(
     { domain: domainDetails.domain, name: domainDetails.name },
     { ...domainDetails },
     {

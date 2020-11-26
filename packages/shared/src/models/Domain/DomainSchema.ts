@@ -33,4 +33,4 @@ export interface DomainDocument extends Domain, Document {}
 
 export interface DomainModel extends Model<DomainDocument> {}
 
-export default mongoose.model<DomainDocument, DomainModel>("Domain", DomainSchema);
+export const DomainSchemaModel = mongoose.model<DomainDocument, DomainModel>("Domain", DomainSchema);

@@ -59,4 +59,7 @@ export interface StarnameModel extends Model<StarnameDocument> {
   findAndPopulate(id?: string): DocumentQuery<StarnamePopulatedDocument[], StarnamePopulatedDocument>;
 }
 
-export default mongoose.model<StarnameDocument, StarnameModel>("Starname", StarnameSchema);
+export const StarnameSchemaModel = mongoose.model<StarnameDocument, StarnameModel>(
+  "Starname",
+  StarnameSchema,
+);

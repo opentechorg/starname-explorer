@@ -1,6 +1,5 @@
 import { Msg } from "@cosmjs/launchpad";
-
-import StarnameModel from "../models/Starname/StarnameSchema";
+import { StarnameSchemaModel } from "@starname-explorer/shared";
 
 interface RegisterAccountValue {
   readonly domain: string;
@@ -25,7 +24,7 @@ export function isMsgRegisterAccount(msg: Msg): msg is MsgRegisterAccount {
 }
 
 export async function MsgRegisterAccountStore(account: RegisterAccountValue): Promise<void> {
-  await StarnameModel.updateOne(
+  await StarnameSchemaModel.updateOne(
     { domain: account.domain, name: account.name },
     { ...account },
     {

@@ -1,27 +1,21 @@
 {
-  "name": "starname_scrapper",
-  "version": "1.0.0",
-  "author": "Albert Andrejev",
-  "license": "Apache-2.0",
+  "name": "starname-explorer",
   "private": true,
+  "license": "Apache-2.0",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "dry-build": "tsc --noEmit",
-    "build": "tsc",
-    "start": "ts-node src/index.ts",
-    "process-genesis": "ts-node src/process-genesis.ts",
-    "format": "prettier --write --loglevel warn './src/**/*.{ts,json,md,css}'",
-    "lint": "eslint -c .eslintrc.js --max-warnings 0 'src/**/*.ts'",
-    "lint:fix": "eslint -c .eslintrc.js 'src/**/*.ts' --fix"
-  },
-  "dependencies": {
-    "@cosmjs/launchpad": "^0.23.1",
-    "@cosmjs/socket": "^0.23.1",
-    "dotenv": "^8.2.0",
-    "mongoose": "^5.10.13",
-    "stream-chain": "^2.2.3",
-    "stream-json": "^1.7.1",
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.5"
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build --stream",
+    "dry-build": "lerna run dry-build --stream",
+    "build-storybook": "lerna run build-storybook --stream",
+    "format": "lerna run format",
+    "lint": "lerna run lint",
+    "lint:fix": "lerna run lint:fix",
+    "release": "lerna run build && lerna publish",
+    "storybook": "lerna run storybook --stream",
+    "test": "lerna run --concurrency 1 test --stream"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
@@ -35,6 +29,11 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^5.0.3",
+    "lerna": "^3.22.1",
     "prettier": "^2.1.2"
+  },
+  "dependencies": {
+    "mongoose": "^5.10.13",
+    "typescript": "^4.0.5"
   }
 }

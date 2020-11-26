@@ -1,13 +1,12 @@
+import { DomainSchemaModel, StarnameSchemaModel } from "@starname-explorer/shared";
 import dotenv from "dotenv";
 import fs from "fs";
 import mongoose from "mongoose";
+import path from "path";
 import { chain } from "stream-chain";
 import { parser } from "stream-json";
 import { pick } from "stream-json/filters/Pick";
 import { streamArray } from "stream-json/streamers/StreamArray";
-
-import DomainModel from "./models/Domain/DomainSchema";
-import StarnameModel from "./models/Starname/StarnameSchema";
 
 dotenv.config();
 
@@ -15,7 +14,7 @@ const processDomains = async (): Promise<void> => {
   return new Promise((resolve) => {
     console.log("Processing domains...");
     const pipeline = chain([
-      fs.createReadStream("./assets/genesis.json"),
+      fs.createReadStream(path.join(__dirname, "./assets/genesis.json")),
       parser(),
       pick({ filter: "app_state" }),
       pick({ filter: "starname" }),
@@ -24,7 +23,7 @@ const processDomains = async (): Promise<void> => {
       async (domain) => {
         // console.log("new data");
         // console.log(domain.value);
-        await DomainModel.updateOne(
+        await DomainSchemaModel.updateOne(
           { domain: domain.value.name },
           { ...domain.value, domain: domain.value.name },
           {
@@ -59,7 +58,7 @@ const processStarnames = async (): Promise<void> => {
       async (account) => {
         // console.log("new data");
         // console.log(account.value);
-        await StarnameModel.updateOne(
+        await StarnameSchemaModel.updateOne(
           { domain: account.value.domain, name: account.value.name },
           { ...account.value },
           {

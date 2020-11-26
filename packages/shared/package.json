@@ -1,0 +1,16 @@
+{
+  "name": "@starname-explorer/shared",
+  "version": "0.0.1",
+  "author": "Albert Andrejev",
+  "license": "Apache-2.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dry-build": "tsc --noEmit",
+    "build": "tsc",
+    "format": "prettier --write --loglevel warn './src/**/*.{ts,json,md,css}'",
+    "lint": "eslint -c .eslintrc.js --max-warnings 0 'src/**/*.ts'",
+    "lint:fix": "eslint -c .eslintrc.js 'src/**/*.ts' --fix"
+  }  
+}

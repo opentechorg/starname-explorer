@@ -1,3 +1,3 @@
-## Description
+## Starname explorer mono repository
 
-This project will create list of all available starnames with its owners.
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)

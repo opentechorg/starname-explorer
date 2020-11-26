@@ -1,19 +1,6 @@
 import { LcdClient, Msg } from "@cosmjs/launchpad";
 import { ReconnectingSocket, SocketWrapperMessageEvent } from "@cosmjs/socket";
 
-import { StarnameExtension } from "./starname";
-import {
-  isMsgRegisterAccount,
-  isMsgRegisterDomain,
-  isMsgRenewDomain,
-  isMsgTransferAccount,
-  isMsgTransferDomainAll,
-  MsgRegisterAccountStore,
-  MsgRegisterDomainStore,
-  MsgRenewDomainStore,
-  MsgTransferAccountStore,
-  MsgTransferDomainAllStore,
-} from "./Transactions";
 import { processStarnameTx } from "./Transactions/process";
 import { isJsonRpcErrorResponse, JsonRpcResponse, LcdStarnameClient, SubscriptionEvent } from "./types";
 

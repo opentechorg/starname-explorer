@@ -1,6 +1,5 @@
 import { Msg } from "@cosmjs/launchpad";
-
-import StarnameModel from "../models/Starname/StarnameSchema";
+import { StarnameSchemaModel } from "@starname-explorer/shared";
 
 interface TransferAccountValue {
   readonly domain: string;
@@ -24,7 +23,7 @@ export function isMsgTransferAccount(msg: Msg): msg is MsgTransferAccount {
 }
 
 export async function MsgTransferAccountStore(transfer: TransferAccountValue): Promise<void> {
-  await StarnameModel.updateOne(
+  await StarnameSchemaModel.updateOne(
     { domain: transfer.domain, name: transfer.name },
     { $set: { owner: transfer.new_owner } },
   );

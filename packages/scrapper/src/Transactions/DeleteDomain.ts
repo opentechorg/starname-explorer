@@ -1,6 +1,5 @@
 import { Msg } from "@cosmjs/launchpad";
-
-import DomainModel from "../models/Domain/DomainSchema";
+import { DomainSchemaModel } from "@starname-explorer/shared";
 
 interface DeleteDomainValue {
   readonly domain: string;
@@ -20,5 +19,5 @@ export function isMsgDeleteDomain(msg: Msg): msg is MsgDeleteDomain {
 }
 
 export async function MsgDeleteDomainStore(domain: DeleteDomainValue): Promise<void> {
-  await DomainModel.deleteOne({ domain: domain.domain });
+  await DomainSchemaModel.deleteOne({ domain: domain.domain });
 }

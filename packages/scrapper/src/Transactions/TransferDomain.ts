@@ -1,6 +1,5 @@
 import { Msg } from "@cosmjs/launchpad";
-
-import DomainModel from "../models/Domain/DomainSchema";
+import { DomainSchemaModel } from "@starname-explorer/shared";
 
 interface TransferDomainAllValue {
   readonly domain: string;
@@ -23,5 +22,5 @@ export function isMsgTransferDomainAll(msg: Msg): msg is MsgTransferDomainAll {
 }
 
 export async function MsgTransferDomainAllStore(transfer: TransferDomainAllValue): Promise<void> {
-  await DomainModel.updateOne({ domain: transfer.domain }, { $set: { admin: transfer.new_admin } });
+  await DomainSchemaModel.updateOne({ domain: transfer.domain }, { $set: { admin: transfer.new_admin } });
 }

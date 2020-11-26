@@ -1,6 +1,6 @@
 import { Msg } from "@cosmjs/launchpad";
+import { StarnameSchemaModel } from "@starname-explorer/shared";
 
-import StarnameModel from "../models/Starname/StarnameSchema";
 import { StarnameExtension } from "../starname";
 
 interface RenewDomainValue {
@@ -27,7 +27,7 @@ export async function MsgRenewDomainStore(
 ): Promise<void> {
   const domainDetails = await client.starname.query(`${name}*${domain}`);
 
-  await StarnameModel.updateOne(
+  await StarnameSchemaModel.updateOne(
     { domain: domainDetails.domain, name: domainDetails.name },
     { $set: { valid_until: domainDetails.valid_until } },
   );
