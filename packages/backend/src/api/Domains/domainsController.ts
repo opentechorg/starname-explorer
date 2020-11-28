@@ -20,7 +20,7 @@ export class DomainsController {
           {
             page: 1,
             limit: 1,
-            populate: "starnames",
+            // populate: "starnames",
           },
         ).then((page) => res.json(page));
       } else {
@@ -29,7 +29,7 @@ export class DomainsController {
           {
             page,
             limit,
-            populate: "starnames",
+            // populate: "starnames",
             sort: { name: +1 },
           },
         ).then((page) => res.json(page));
