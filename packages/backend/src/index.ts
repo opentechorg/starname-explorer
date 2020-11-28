@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 
 app.use(bodyParser.json());
-app.use("/", apiBackend);
+app.use("/api", apiBackend);
 
 const PORT = Number(process.env.PORT) || 30000;
 
