@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "copy-genesis": "mkdir -p ./dist/assets && cp -r ./assets ./dist",
+    "copy-genesis": "mkdir -p ../../dist/scrapper/assets && cp -r ./assets ../../dist/scrapper",
     "dry-build": "tsc --noEmit",
     "build": "tsc && yarn copy-genesis",
     "start": "ts-node src/index.ts",

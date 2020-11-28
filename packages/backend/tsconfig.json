@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "../../dist/scrapper"
+    "outDir": "../../dist/backend",
   },
   "include": [
     "src/**/*.ts"
