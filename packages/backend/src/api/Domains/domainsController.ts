@@ -3,17 +3,23 @@ import { Request, Response } from "express";
 
 export class DomainsController {
   getDomains(req: Request, res: Response): void {
-    const page = Number(req.params.page) || 1;
-    const limit = Number(req.params.limit) || Number(process.env.MAX_RESULTS_PER_PAGE) || 100;
+    const page = Number(req.query.page) || 1;
+
+    const maxLimitPerPage = Number(process.env.MAX_RESULTS_PER_PAGE);
+    let limit = Number(req.query.limit) || maxLimitPerPage || 100;
+
+    if (limit > maxLimitPerPage) {
+      limit = maxLimitPerPage;
+    }
 
     try {
-      if (req.params.id != null) {
+      if (req.query.id != null) {
         const domainId = req.params.id;
         DomainSchemaModel.findWithPages(
           { _id: domainId },
           {
-            page,
-            limit,
+            page: 1,
+            limit: 1,
             populate: "starnames",
           },
         ).then((page) => res.json(page));
