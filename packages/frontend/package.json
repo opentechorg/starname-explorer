@@ -29,10 +29,11 @@
     "random-js": "^2.1.0"
   },
   "scripts": {
+    "copy-frontend": "mkdir -p ../../dist/frontend && cp -r ./build/* ../../dist/frontend",
     "dry-build": "tsc --noEmit",
     "storybook": "start-storybook",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && yarn copy-frontend",
     "test:unit": "CI=true react-scripts test '\\.unit\\.(spec|test)\\.[jt]s[x]?$' --env=jsdom --detectOpenHandles",
     "test:dom": "CI=true react-scripts test '\\.dom\\.(spec|test)\\.[jt]s[x]?$' --env=jsdom --detectOpenHandles",
     "test": "yarn test:unit && yarn test:dom",
