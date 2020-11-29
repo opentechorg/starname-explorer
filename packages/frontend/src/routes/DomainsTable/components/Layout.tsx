@@ -1,8 +1,7 @@
-import { Domain } from "@starname-explorer/shared";
 import React from "react";
 
 import Box from "../../../components/Box";
-import Table, { TABLE_WIDTH, TableProps } from "./Table";
+import Table, { TableProps } from "./Table";
 
 const Layout: React.FunctionComponent<TableProps> = ({
   domains,
@@ -14,7 +13,7 @@ const Layout: React.FunctionComponent<TableProps> = ({
 }): JSX.Element => {
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Box width={TABLE_WIDTH}>
+      <Box>
         <Table
           domains={domains}
           count={count}

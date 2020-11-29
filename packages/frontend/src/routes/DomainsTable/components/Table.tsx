@@ -12,17 +12,6 @@ import TableHead from "../../../components/TableHead";
 import TablePagination from "../../../components/TablePagination";
 import TableRow from "../../../components/TableRow";
 
-export const TABLE_WIDTH = 820;
-
-const useStyles = makeStyles({
-  table: {
-    width: TABLE_WIDTH,
-  },
-  cell: {
-    width: "200px",
-  },
-});
-
 export interface TableProps {
   readonly domains: readonly Domain[];
   readonly count: number;
@@ -40,8 +29,6 @@ const ConsentsTable: React.FunctionComponent<TableProps> = ({
   limit,
   setLimit,
 }): JSX.Element => {
-  const classes = useStyles();
-
   const emptyRows = limit - Math.min(limit, count - page * limit);
 
   const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number): void => {
@@ -57,15 +44,13 @@ const ConsentsTable: React.FunctionComponent<TableProps> = ({
 
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="domains table">
+      <Table aria-label="domains table">
         <TableHead>
           <TableRow>
-            <TableCell align="center" className={classes.cell}>
-              Domain
-            </TableCell>
-            <TableCell align="center" className={classes.cell}>
-              Admin
-            </TableCell>
+            <TableCell align="center">Domain</TableCell>
+            <TableCell align="center">Admin</TableCell>
+            <TableCell align="center">Profile</TableCell>
+            <TableCell align="center">Account</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -74,6 +59,20 @@ const ConsentsTable: React.FunctionComponent<TableProps> = ({
               <TableRow key={domain._id}>
                 <TableCell>{domain.domain}</TableCell>
                 <TableCell>{domain.admin}</TableCell>
+                <TableCell>
+                  <a href={`https://starname.me/*${domain.domain}`} target="_blank" rel="noreferrer">
+                    Profile
+                  </a>
+                </TableCell>
+                <TableCell>
+                  <a
+                    href={`https://www.mintscan.io/starname/account/${domain.admin}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Mintscan
+                  </a>
+                </TableCell>
               </TableRow>
             );
           })}
