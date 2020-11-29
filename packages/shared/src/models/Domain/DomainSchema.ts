@@ -33,6 +33,7 @@ DomainSchema.virtual("starnames", {
 });
 
 export interface Domain {
+  readonly _id: string;
   readonly domain: string;
   readonly admin: string;
   readonly type: DomainType;
@@ -41,7 +42,7 @@ export interface Domain {
   readonly starnames?: Starname[];
 }
 
-export interface DomainDocument extends Domain, Document {}
+export interface DomainDocument extends Omit<Domain, "_id">, Document {}
 
 export interface DomainPopulatedDocument extends DomainDocument {
   starnames: Starname[];

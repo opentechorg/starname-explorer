@@ -1,0 +1,94 @@
+Arguments: 
+  /usr/local/bin/node /usr/share/yarn/bin/yarn.js install
+
+PATH: 
+  /home/albert/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/home/albert/go/bin
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  12.18.3
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/albert/Projects/CosmosSDKTools/StarnameExplorer/app/packages/frontend/package.json: Unexpected token } in JSON at position 634
+      at JSON.parse (<anonymous>)
+      at /usr/share/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/share/yarn/lib/cli.js:310:30)
+      at /usr/share/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "starname-lookup",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "@material-ui/core": "^4.11.0",
+      "@material-ui/lab": "^4.0.0-alpha.56",
+      "@testing-library/jest-dom": "^5.11.5",
+      "@testing-library/react": "^11.1.1",
+      "@testing-library/user-event": "^12.2.0",
+      "final-form": "^4.20.1",
+      "react": "^17.0.1",
+      "react-dom": "^17.0.1",
+      "react-final-form-hooks": "^2.0.2",
+      "react-redux": "^7.2.2",
+      "react-router-dom": "^5.2.0",
+      "react-scripts": "^4.0.0",
+      "redux": "^4.0.5",
+      "redux-logger": "3.0.6",
+      "redux-thunk": "^2.3.0",
+      "typesafe-actions": "^5.1.0",
+    },
+    "devDependencies": {
+      "@storybook/addon-actions": "^6.0.28",
+      "@storybook/addon-links": "^6.0.28",
+      "@storybook/addons": "^6.0.28",
+      "@storybook/preset-create-react-app": "^3.1.4",
+      "@storybook/react": "^6.0.28",
+      "@types/jest": "^26.0.0",
+      "@types/node": "^14.14.6",
+      "@types/react": "~16.9.55",
+      "@types/react-dom": "^16.9.9",
+      "@types/react-redux": "^7.1.11",
+      "@types/react-router-dom": "^5.1.6",
+      "@types/redux-logger": "^3.0.8",
+      "@types/redux-thunk": "^2.1.0",
+      "random-js": "^2.1.0"
+    },
+    "scripts": {
+      "dry-build": "tsc --noEmit",
+      "storybook": "start-storybook",
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test:unit": "CI=true react-scripts test '\\.unit\\.(spec|test)\\.[jt]s[x]?$' --env=jsdom --detectOpenHandles",
+      "test:dom": "CI=true react-scripts test '\\.dom\\.(spec|test)\\.[jt]s[x]?$' --env=jsdom --detectOpenHandles",
+      "test": "yarn test:unit && yarn test:dom",
+      "eject": "react-scripts eject",
+      "format": "prettier --write --loglevel warn './src/**/*.{ts,tsx,json,md,css}'",
+      "lint": "eslint -c .eslintrc.js --max-warnings 0 'src/**/*.ts{,x}'",
+      "lint:fix": "eslint -c .eslintrc.js 'src/**/*.ts{,x}' --fix"
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

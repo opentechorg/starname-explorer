@@ -30,7 +30,7 @@ export class DomainsController {
             page,
             limit,
             // populate: "starnames",
-            sort: { name: +1 },
+            sort: { domain: +1 },
           },
         ).then((page) => res.json(page));
       }
