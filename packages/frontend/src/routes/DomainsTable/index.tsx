@@ -3,13 +3,22 @@ import React from "react";
 
 import { ResultsPage } from "../../types/ResultsPage";
 import Layout from "./components/Layout";
+import { TablePageSettings } from "./components/Table";
 
-const Consents: React.FunctionComponent = (): JSX.Element => {
+const DomainsTable: React.FunctionComponent = (): JSX.Element => {
   const [domainsPage, setDomainsPage] = React.useState<ResultsPage<Domain> | null>();
-  const [page, setPage] = React.useState(0);
-  const [limit, setLimit] = React.useState(10);
+  const [pageSettings, setPageSettings] = React.useState<TablePageSettings>({
+    sorting: {
+      column: "domain",
+      order: 1,
+    },
+    page: 0,
+    limit: 25,
+  });
   React.useEffect(() => {
-    fetch(`https://explorer.opentech.ee/api/domains?limit=${limit}&page=${page + 1}`)
+    fetch(
+      `https://explorer.opentech.ee/api/domains?limit=${pageSettings.limit}&page=${pageSettings.page + 1}`,
+    )
       .then((response) => {
         return response.json();
       })
@@ -17,7 +26,7 @@ const Consents: React.FunctionComponent = (): JSX.Element => {
         setDomainsPage(data);
         console.log(data);
       });
-  }, [page, limit]);
+  }, [pageSettings]);
 
   return (
     <React.Fragment>
@@ -25,14 +34,12 @@ const Consents: React.FunctionComponent = (): JSX.Element => {
         <Layout
           domains={domainsPage.docs}
           count={domainsPage.totalDocs}
-          page={page}
-          setPage={setPage}
-          limit={limit}
-          setLimit={setLimit}
+          pageSettings={pageSettings}
+          setPageSettings={setPageSettings}
         />
       )}
     </React.Fragment>
   );
 };
 
-export default Consents;
+export default DomainsTable;

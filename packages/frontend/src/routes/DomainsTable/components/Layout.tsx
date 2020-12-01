@@ -6,23 +6,12 @@ import Table, { TableProps } from "./Table";
 const Layout: React.FunctionComponent<TableProps> = ({
   domains,
   count,
-  page,
-  setPage,
-  limit,
-  setLimit,
+  pageSettings,
+  setPageSettings,
 }): JSX.Element => {
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
-      <Box>
-        <Table
-          domains={domains}
-          count={count}
-          page={page}
-          setPage={setPage}
-          limit={limit}
-          setLimit={setLimit}
-        />
-      </Box>
+    <Box width={920}>
+      <Table domains={domains} count={count} pageSettings={pageSettings} setPageSettings={setPageSettings} />
     </Box>
   );
 };

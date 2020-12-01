@@ -1,8 +1,16 @@
 import { DomainSchemaModel } from "@starname-explorer/shared";
 import { Request, Response } from "express";
 
+import validateDomainPageReq from "../../validators/domainPageRequest";
+
 export class DomainsController {
   getDomains(req: Request, res: Response): void {
+    if (!validateDomainPageReq(req.query)) {
+      res.send(400).send(JSON.stringify(validateDomainPageReq.errors));
+      return;
+    }
+
+
     const page = Number(req.query.page) || 1;
 
     const maxLimitPerPage = Number(process.env.MAX_RESULTS_PER_PAGE);
@@ -38,4 +46,6 @@ export class DomainsController {
       console.error(err);
     }
   }
+
+  static 
 }

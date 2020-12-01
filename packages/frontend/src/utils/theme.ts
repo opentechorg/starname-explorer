@@ -1,5 +1,20 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme, ThemeOptions } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({});
 
-export default theme;
+const themeOptions: ThemeOptions = {
+  ...theme,
+  overrides: {
+    MuiTableHead: {
+      root: {
+        backgroundColor: theme.palette.primary.main,
+        "& .MuiTableCell-head": {
+          color: "white",
+          cursor: "pointer",
+        },
+      },
+    },
+  },
+};
+
+export default createMuiTheme(themeOptions);

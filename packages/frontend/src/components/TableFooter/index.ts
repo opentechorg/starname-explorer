@@ -1,3 +1,3 @@
-import Table from "@material-ui/core/Table";
-
-export default Table;
+import TableFooter from "@material-ui/core/TableFooter";
+export * from "@material-ui/core/TableFooter";
+export default TableFooter;
