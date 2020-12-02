@@ -30,7 +30,12 @@ export class DomainsController {
         );
       } else {
         DomainSchemaModel.findWithPages(
-          { $or: [{ domain: new RegExp(req.query.query) }, { admin: new RegExp(req.query.query) }] },
+          {
+            $or: [
+              { domain: new RegExp(req.query.query.toLowerCase()) },
+              { admin: new RegExp(req.query.query.toLowerCase()) },
+            ],
+          },
           {
             page: req.query.page,
             limit: req.query.limit,
