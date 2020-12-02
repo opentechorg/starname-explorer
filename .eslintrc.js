@@ -2,11 +2,13 @@ module.exports = {
   //https://codequs.com/p/rk7e07UBV/using-eslint-and-prettier-in-a-typescript-project
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 2018,
-    project: "./tsconfig.json",
+    project: [
+      "./tsconfig.json", 
+      "./packages/*/tsconfig.json"
+    ],
     tsconfigRootDir: __dirname,
   },
-  plugins: ["@typescript-eslint", "simple-import-sort"],
+  plugins: ["@typescript-eslint", "simple-import-sort", "import"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",

@@ -15,15 +15,6 @@ export class DomainsController {
       return;
     }
 
-    const page = Number(req.query.page) || 1;
-
-    const maxLimitPerPage = Number(process.env.MAX_RESULTS_PER_PAGE);
-    let limit = Number(req.query.limit) || maxLimitPerPage || 100;
-
-    if (limit > maxLimitPerPage) {
-      limit = maxLimitPerPage;
-    }
-
     try {
       if (req.query.id != null) {
         const domainId = req.params.id;
@@ -34,17 +25,23 @@ export class DomainsController {
             limit: 1,
             // populate: "starnames",
           },
-        ).then((page) => res.json(page));
+        ).then(
+          (page) => res.json(page),
+          (reason) => console.error(reason),
+        );
       } else {
         DomainSchemaModel.findWithPages(
-          {},
+          { $or: [{ domain: new RegExp(req.query.query) }, { admin: new RegExp(req.query.query) }] },
           {
-            page,
-            limit,
+            page: req.query.page,
+            limit: req.query.limit,
             // populate: "starnames",
-            sort: { domain: +1 },
+            sort: { [req.query.sortColumn]: req.query.sortOrder },
           },
-        ).then((page) => res.json(page));
+        ).then(
+          (page) => res.json(page),
+          (reason) => console.error(reason),
+        );
       }
     } catch (err) {
       console.error(err);

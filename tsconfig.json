@@ -9,6 +9,7 @@
       "esnext"
     ],
     "esModuleInterop": true,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "noFallthroughCasesInSwitch": false,
@@ -22,5 +23,5 @@
     "typeRoots": [
       "./node_modules/@types"
     ],
-  },
+  }
 }

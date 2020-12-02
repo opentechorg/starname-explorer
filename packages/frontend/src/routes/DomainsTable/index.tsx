@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import { TablePageSettings } from "./components/Table";
 
 const DomainsTable: React.FunctionComponent = (): JSX.Element => {
+  const [query, setQuery] = React.useState<string | null>();
   const [domainsPage, setDomainsPage] = React.useState<ResultsPage<Domain> | null>();
   const [pageSettings, setPageSettings] = React.useState<TablePageSettings>({
     sorting: {
@@ -17,10 +18,15 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
     limit: 25,
   });
   React.useEffect(() => {
-    /* fetch(
-      `https://explorer.opentech.ee/api/domains?limit=${pageSettings.limit}&page=${pageSettings.page + 1}`,
-    )*/
-    fetch(`${Config.backendURL}api/domains?limit=${pageSettings.limit}&page=${pageSettings.page + 1}`)
+    const getParams: string[] = [];
+    getParams.push(`limit=${pageSettings.limit}`);
+    getParams.push(`page=${pageSettings.page + 1}`);
+    getParams.push(`sortColumn=${pageSettings.sorting.column}`);
+    getParams.push(`sortOrder=${pageSettings.sorting.order}`);
+    if (query) {
+      getParams.push(`query=${query}`);
+    }
+    fetch(`${Config.backendURL}api/domains?${getParams.join("&")}`)
       .then((response) => {
         return response.json();
       })
@@ -28,8 +34,11 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
         setDomainsPage(data);
         console.log(data);
       });
-  }, [pageSettings]);
+  }, [pageSettings, query]);
 
+  const onSearch = (query: string): void => {
+    setQuery(query);
+  };
   return (
     <React.Fragment>
       {domainsPage && (
@@ -38,6 +47,7 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
           count={domainsPage.totalDocs}
           pageSettings={pageSettings}
           setPageSettings={setPageSettings}
+          onSearch={onSearch}
         />
       )}
     </React.Fragment>

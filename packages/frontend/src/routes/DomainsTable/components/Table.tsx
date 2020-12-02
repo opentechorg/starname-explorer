@@ -16,7 +16,7 @@ import TableHead from "../../../components/TableHead";
 import TablePagination from "../../../components/TablePagination";
 import TableRow from "../../../components/TableRow";
 
-type Columns = "domain" | "owner";
+type Columns = "domain" | "admin";
 type SortOrder = 1 | -1;
 
 export interface TablePageSettings {
@@ -83,7 +83,7 @@ const DomainsTable: React.FunctionComponent<TableProps> = ({
   };
 
   const handleOwnerSorting = (): void => {
-    handleSorting("owner");
+    handleSorting("admin");
   };
 
   return (
@@ -91,8 +91,8 @@ const DomainsTable: React.FunctionComponent<TableProps> = ({
       <Table aria-label="domains table">
         <TableHead>
           <TableRow>
-            <TableCell align="center">
-              <Box display="flex" justifyContent="center" onClick={handleDomainSorting}>
+            <TableCell width={250}>
+              <Box display="flex" onClick={handleDomainSorting}>
                 Domain
                 {pageSettings.sorting.column === "domain" && (
                   <SortingIcon order={pageSettings.sorting.order} />
@@ -100,14 +100,16 @@ const DomainsTable: React.FunctionComponent<TableProps> = ({
               </Box>
             </TableCell>
             <TableCell>
-              <Box display="flex" justifyContent="center" onClick={handleOwnerSorting}>
+              <Box display="flex" onClick={handleOwnerSorting}>
                 Owner{" "}
-                {pageSettings.sorting.column === "owner" && (
+                {pageSettings.sorting.column === "admin" && (
                   <SortingIcon order={pageSettings.sorting.order} />
                 )}
               </Box>
             </TableCell>
-            <TableCell align="center">Resources</TableCell>
+            <TableCell align="center" width={120}>
+              Resources
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
