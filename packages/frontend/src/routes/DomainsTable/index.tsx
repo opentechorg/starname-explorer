@@ -2,6 +2,7 @@ import { Domain } from "@starname-explorer/shared";
 import React from "react";
 
 import { ResultsPage } from "../../types/ResultsPage";
+import { Config } from "../../utils/config";
 import Layout from "./components/Layout";
 import { TablePageSettings } from "./components/Table";
 
@@ -16,9 +17,10 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
     limit: 25,
   });
   React.useEffect(() => {
-    fetch(
+    /* fetch(
       `https://explorer.opentech.ee/api/domains?limit=${pageSettings.limit}&page=${pageSettings.page + 1}`,
-    )
+    )*/
+    fetch(`${Config.backendURL}api/domains?limit=${pageSettings.limit}&page=${pageSettings.page + 1}`)
       .then((response) => {
         return response.json();
       })

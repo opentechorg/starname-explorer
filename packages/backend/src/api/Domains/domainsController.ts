@@ -1,15 +1,19 @@
 import { DomainSchemaModel } from "@starname-explorer/shared";
+import { DefinedError } from "ajv";
 import { Request, Response } from "express";
 
 import validateDomainPageReq from "../../validators/domainPageRequest";
 
 export class DomainsController {
   getDomains(req: Request, res: Response): void {
+    console.log(req.query);
     if (!validateDomainPageReq(req.query)) {
-      res.send(400).send(JSON.stringify(validateDomainPageReq.errors));
+      for (const err of validateDomainPageReq.errors as DefinedError[]) {
+        console.log(err);
+      }
+      res.status(400).send(JSON.stringify(validateDomainPageReq.errors));
       return;
     }
-
 
     const page = Number(req.query.page) || 1;
 
@@ -46,6 +50,4 @@ export class DomainsController {
       console.error(err);
     }
   }
-
-  static 
 }

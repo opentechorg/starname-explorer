@@ -19,7 +19,11 @@ module.exports = {
     "prefer-const": "warn",
     "sort-imports": "off",
     "spaced-comment": ["warn", "always", { line: { markers: ["/ <reference"] } }],
-    "simple-import-sort/sort": "warn",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
     "@typescript-eslint/explicit-function-return-type": [
       "error",
       {
