@@ -14,6 +14,16 @@ export class DomainsController {
       return;
     }
 
+    let query = {};
+    if (req.query.query) {
+      query = {
+        $or: [
+          { domain: new RegExp(req.query.query ? .toLowerCase()) },
+          { admin: new RegExp(req.query.query.toLowerCase()) },
+        ],
+      }
+    }
+
     try {
       if (req.query.id != null) {
         const domainId = req.params.id;
@@ -30,12 +40,7 @@ export class DomainsController {
         );
       } else {
         DomainSchemaModel.findWithPages(
-          {
-            $or: [
-              { domain: new RegExp(req.query.query.toLowerCase()) },
-              { admin: new RegExp(req.query.query.toLowerCase()) },
-            ],
-          },
+          query,
           {
             page: req.query.page,
             limit: req.query.limit,
