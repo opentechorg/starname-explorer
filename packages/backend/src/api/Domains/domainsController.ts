@@ -16,11 +16,9 @@ export class DomainsController {
 
     let query = {};
     if (req.query.query) {
+      const clearQuery = req.query.query.toLowerCase().replace(/[^a-z^0-9^\-^_]/g, "");
       query = {
-        $or: [
-          { domain: new RegExp(req.query.query.toLowerCase()) },
-          { admin: new RegExp(req.query.query.toLowerCase()) },
-        ],
+        $or: [{ domain: new RegExp(clearQuery) }, { admin: new RegExp(clearQuery) }],
       };
     }
 
