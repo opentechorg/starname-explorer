@@ -18,10 +18,10 @@ export class DomainsController {
     if (req.query.query) {
       query = {
         $or: [
-          { domain: new RegExp(req.query.query ? .toLowerCase()) },
+          { domain: new RegExp(req.query.query.toLowerCase()) },
           { admin: new RegExp(req.query.query.toLowerCase()) },
         ],
-      }
+      };
     }
 
     try {
@@ -39,15 +39,12 @@ export class DomainsController {
           (reason) => console.error(reason),
         );
       } else {
-        DomainSchemaModel.findWithPages(
-          query,
-          {
-            page: req.query.page,
-            limit: req.query.limit,
-            // populate: "starnames",
-            sort: { [req.query.sortColumn]: req.query.sortOrder },
-          },
-        ).then(
+        DomainSchemaModel.findWithPages(query, {
+          page: req.query.page,
+          limit: req.query.limit,
+          // populate: "starnames",
+          sort: { [req.query.sortColumn]: req.query.sortOrder },
+        }).then(
           (page) => res.json(page),
           (reason) => console.error(reason),
         );
