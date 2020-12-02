@@ -6,7 +6,6 @@ import validateDomainPageReq from "../../validators/domainPageRequest";
 
 export class DomainsController {
   getDomains(req: Request, res: Response): void {
-    console.log(req.query);
     if (!validateDomainPageReq(req.query)) {
       for (const err of validateDomainPageReq.errors as DefinedError[]) {
         console.log(err);
