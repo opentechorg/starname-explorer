@@ -28,7 +28,6 @@ export function isMsgRegisterDomain(msg: Msg): msg is MsgRegisterDomain {
 export async function MsgRegisterDomainStore(
   domain: RegisterDomainValue,
   client: StarnameExtension,
-  live = false,
 ): Promise<void> {
   await DomainSchemaModel.updateOne({ domain: domain.domain }, domain as any, {
     upsert: true,
