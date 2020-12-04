@@ -39,7 +39,7 @@ export async function MsgRegisterAccountStore(
 
   await StarnameSchemaModel.updateOne(
     { domain: account.domain, name: account.name },
-    { ...account, valid_until: accountDetails.valid_until },
+    accountDetails,
     {
       upsert: true,
     },

@@ -28,6 +28,7 @@ export function isMsgRegisterDomain(msg: Msg): msg is MsgRegisterDomain {
 export async function MsgRegisterDomainStore(
   domain: RegisterDomainValue,
   client: StarnameExtension,
+  live = false,
 ): Promise<void> {
   await DomainSchemaModel.updateOne({ domain: domain.domain }, domain as any, {
     upsert: true,
@@ -40,11 +41,15 @@ export async function MsgRegisterDomainStore(
     { $set: { valid_until: domainInfo.valid_until } },
   );
 
+  getDomainAccounts(client, domain.domain);
+}
+
+async function getDomainAccounts(client: StarnameExtension, domain: string): Promise<void> {
   let offset = 0;
   let accounts: AccountNft[] = [];
 
   do {
-    accounts = await client.starname.queryAccountsInDomain(domain.domain, txsPerPage, offset);
+    accounts = await client.starname.queryAccountsInDomain(domain, txsPerPage, offset);
     offset += txsPerPage;
 
     for (const account of accounts) {
@@ -61,5 +66,5 @@ export async function MsgRegisterDomainStore(
         },
       );
     }
-  } while (accounts.length === 10);
+  } while (accounts.length === txsPerPage);
 }
