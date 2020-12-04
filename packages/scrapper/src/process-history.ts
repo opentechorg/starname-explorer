@@ -2,7 +2,7 @@ import {
   getAccountTransferQuery,
   getDomainRenewsQuery,
   getDomainTransferQuery,
-  getRegAccountQuery,
+  // getRegAccountQuery,
   getRegDomainQuery,
   StarnameExtension,
 } from "./starname";
@@ -38,8 +38,8 @@ export async function processHistory(client: StarnameExtension): Promise<void> {
 
   console.log("Processing domains...");
   await fetchHistoryData(client, getRegDomainQuery);
-  console.log("Processing accounts...");
-  await fetchHistoryData(client, getRegAccountQuery);
+  // console.log("Processing accounts...");
+  // await fetchHistoryData(client, getRegAccountQuery);
   console.log("Processing domain transfers...");
   await fetchHistoryData(client, getDomainTransferQuery);
   console.log("Processing domain renews...");

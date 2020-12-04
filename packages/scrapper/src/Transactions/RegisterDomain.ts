@@ -1,7 +1,9 @@
 import { Msg } from "@cosmjs/launchpad";
 import { DomainSchemaModel, StarnameSchemaModel } from "@starname-explorer/shared";
 
-import { StarnameExtension } from "../starname";
+import { AccountNft, StarnameExtension } from "../starname";
+
+const txsPerPage = Number(process.env.TXS_PER_PAGE);
 
 interface RegisterDomainValue {
   readonly domain: string;
@@ -31,13 +33,33 @@ export async function MsgRegisterDomainStore(
     upsert: true,
   });
 
-  const domainDetails = await client.starname.query(`*${domain.domain}`);
+  const domainInfo = await client.starname.queryDomainInfo(domain.domain);
 
-  await StarnameSchemaModel.updateOne(
-    { domain: domainDetails.domain, name: domainDetails.name },
-    { ...domainDetails },
-    {
-      upsert: true,
-    },
+  await DomainSchemaModel.updateOne(
+    { domain: domainInfo.name },
+    { $set: { valid_until: domainInfo.valid_until } },
   );
+
+  let offset = 0;
+  let accounts: AccountNft[] = [];
+
+  do {
+    accounts = await client.starname.queryAccountsInDomain(domain.domain, txsPerPage, offset);
+    offset += txsPerPage;
+
+    for (const account of accounts) {
+      await StarnameSchemaModel.updateOne(
+        { domain: account.domain, name: account.name },
+        { ...account },
+        {
+          upsert: true,
+        },
+        (error) => {
+          if (error) {
+            console.error(error);
+          }
+        },
+      );
+    }
+  } while (accounts.length === 10);
 }

@@ -2,7 +2,7 @@ import Ajv, { JSONSchemaType } from "ajv";
 
 const ajv = new Ajv({ coerceTypes: true });
 
-const ColumnValues = ["domain", "admin"] as const;
+const ColumnValues = ["domain", "admin", "valid_until"] as const;
 type Columns = typeof ColumnValues[number];
 
 type SortOrder = 1 | -1;

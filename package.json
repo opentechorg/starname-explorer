@@ -23,7 +23,6 @@
     "@types/stream-chain": "^2.0.0",
     "@types/stream-json": "^1.5.1",
     "@types/jest": "^26.0.15",
-    "@types/material-ui": "^0.21.8",
     "@types/node": "^14.14.10",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",

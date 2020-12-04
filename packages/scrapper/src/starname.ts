@@ -8,6 +8,16 @@ import {
   MsgTransferDomainAll,
 } from "./Transactions";
 
+export interface DomainNft {
+  readonly name: string;
+  /** Bech32 account address */
+  readonly admin: string;
+  /** Bech32 account address */
+  readonly broker: string;
+  readonly type: string;
+  readonly valid_until: number;
+}
+
 export interface AccountNft {
   readonly domain: string;
   readonly name: string;
@@ -32,7 +42,13 @@ export interface StarnameExtension {
       limit: number,
       page: number,
     ) => Promise<readonly Msg[]>;
-    readonly query: (starname: string) => Promise<AccountNft>;
+    readonly queryResolve: (starname: string) => Promise<AccountNft>;
+    readonly queryAccountsInDomain: (
+      domain: string,
+      results_per_page: number,
+      offset: number,
+    ) => Promise<AccountNft[]>;
+    readonly queryDomainInfo: (name: string) => Promise<DomainNft>;
   };
 }
 
@@ -75,8 +91,13 @@ export function setupStarnameExtension(base: LcdClient): StarnameExtension {
         getStarnameData<Msg>(base, query)(limit, page),
       txsCount: async (query: (limit: number, page: number) => string) =>
         Number((await base.txsQuery(query(1, 1))).total_count),
-      query: async (starname: string) =>
+      queryResolve: async (starname: string) =>
         (await base.post(`/starname/query/resolve`, { starname })).result.account as AccountNft,
+      queryAccountsInDomain: async (domain: string, results_per_page: number, offset: number) =>
+        (await base.post(`/starname/query/accountsInDomain`, { domain, results_per_page, offset })).result
+          .accounts as AccountNft[],
+      queryDomainInfo: async (name: string) =>
+        (await base.post(`/starname/query/domainInfo`, { name })).result.domain as DomainNft,
     },
   };
 }

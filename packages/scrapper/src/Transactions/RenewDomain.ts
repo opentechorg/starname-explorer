@@ -1,5 +1,5 @@
 import { Msg } from "@cosmjs/launchpad";
-import { StarnameSchemaModel } from "@starname-explorer/shared";
+import { DomainSchemaModel } from "@starname-explorer/shared";
 
 import { StarnameExtension } from "../starname";
 
@@ -20,15 +20,11 @@ export function isMsgRenewDomain(msg: Msg): msg is MsgRenewDomain {
   return (msg as MsgRenewDomain).type === "starname/RenewDomain";
 }
 
-export async function MsgRenewDomainStore(
-  domain: string,
-  name: string,
-  client: StarnameExtension,
-): Promise<void> {
-  const domainDetails = await client.starname.query(`${name}*${domain}`);
+export async function MsgRenewDomainStore(domain: string, client: StarnameExtension): Promise<void> {
+  const domainInfo = await client.starname.queryDomainInfo(domain);
 
-  await StarnameSchemaModel.updateOne(
-    { domain: domainDetails.domain, name: domainDetails.name },
-    { $set: { valid_until: domainDetails.valid_until } },
+  await DomainSchemaModel.updateOne(
+    { domain: domainInfo.name },
+    { $set: { valid_until: domainInfo.valid_until } },
   );
 }

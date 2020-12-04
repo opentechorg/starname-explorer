@@ -1,6 +1,8 @@
 import { Msg } from "@cosmjs/launchpad";
 import { StarnameSchemaModel } from "@starname-explorer/shared";
 
+import { StarnameExtension } from "../starname";
+
 interface RegisterAccountValue {
   readonly domain: string;
   readonly name: string;
@@ -12,6 +14,7 @@ interface RegisterAccountValue {
   readonly broker: string;
   /** Bech32 fee_payer address */
   readonly fee_payer: string;
+  readonly metadata_uri: string;
 }
 
 export interface MsgRegisterAccount extends Msg {
@@ -23,10 +26,20 @@ export function isMsgRegisterAccount(msg: Msg): msg is MsgRegisterAccount {
   return (msg as MsgRegisterAccount).type === "starname/RegisterAccount";
 }
 
-export async function MsgRegisterAccountStore(account: RegisterAccountValue): Promise<void> {
+export async function MsgRegisterAccountStore(
+  account: RegisterAccountValue,
+  client: StarnameExtension,
+): Promise<void> {
+  const accountDetails = await client.starname.queryResolve(`${account.name}*${account.domain}`);
+
+  await StarnameSchemaModel.updateOne(
+    { domain: accountDetails.domain, name: accountDetails.name },
+    { $set: { valid_until: accountDetails.valid_until } },
+  );
+
   await StarnameSchemaModel.updateOne(
     { domain: account.domain, name: account.name },
-    { ...account },
+    { ...account, valid_until: accountDetails.valid_until },
     {
       upsert: true,
     },

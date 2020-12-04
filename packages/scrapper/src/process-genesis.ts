@@ -21,8 +21,6 @@ const processDomains = async (): Promise<void> => {
       pick({ filter: "domains" }),
       streamArray(),
       async (domain) => {
-        // console.log("new data");
-        // console.log(domain.value);
         await DomainSchemaModel.updateOne(
           { domain: domain.value.name },
           { ...domain.value, domain: domain.value.name },
@@ -30,8 +28,6 @@ const processDomains = async (): Promise<void> => {
             upsert: true,
           },
         );
-        // const value = data.value;
-        // keep data only for the accounting department
         return domain;
       },
     ]);

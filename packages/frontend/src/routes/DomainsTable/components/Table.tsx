@@ -3,9 +3,7 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import { Domain } from "@starname-explorer/shared";
 import React from "react";
 
-import Avatar from "../../../components/Avatar";
 import Box from "../../../components/Box";
-import Link from "../../../components/Link";
 import Paper from "../../../components/Paper";
 import Table from "../../../components/Table";
 import TableBody from "../../../components/TableBody";
@@ -15,8 +13,9 @@ import TableFooter from "../../../components/TableFooter";
 import TableHead from "../../../components/TableHead";
 import TablePagination from "../../../components/TablePagination";
 import TableRow from "../../../components/TableRow";
+import DomainRow from "./DomainRow";
 
-type Columns = "domain" | "admin";
+type Columns = "domain" | "admin" | "valid_until";
 type SortOrder = 1 | -1;
 
 export interface TablePageSettings {
@@ -86,13 +85,18 @@ const DomainsTable: React.FunctionComponent<TableProps> = ({
     handleSorting("admin");
   };
 
+  const handleValidUntilSorting = (): void => {
+    handleSorting("valid_until");
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="domains table">
         <TableHead>
           <TableRow>
+            <TableCell width={62} />
             <TableCell width={250}>
-              <Box display="flex" onClick={handleDomainSorting}>
+              <Box sx={{ display: "flex" }} onClick={handleDomainSorting}>
                 Domain
                 {pageSettings.sorting.column === "domain" && (
                   <SortingIcon order={pageSettings.sorting.order} />
@@ -100,9 +104,17 @@ const DomainsTable: React.FunctionComponent<TableProps> = ({
               </Box>
             </TableCell>
             <TableCell>
-              <Box display="flex" onClick={handleOwnerSorting}>
+              <Box sx={{ display: "flex" }} onClick={handleOwnerSorting}>
                 Owner{" "}
                 {pageSettings.sorting.column === "admin" && (
+                  <SortingIcon order={pageSettings.sorting.order} />
+                )}
+              </Box>
+            </TableCell>
+            <TableCell width={150}>
+              <Box sx={{ display: "flex" }} onClick={handleValidUntilSorting}>
+                Valid until
+                {pageSettings.sorting.column === "valid_until" && (
                   <SortingIcon order={pageSettings.sorting.order} />
                 )}
               </Box>
@@ -113,24 +125,9 @@ const DomainsTable: React.FunctionComponent<TableProps> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {domains.map((domain) => {
-            return (
-              <TableRow key={domain._id}>
-                <TableCell>{domain.domain}</TableCell>
-                <TableCell>{domain.admin}</TableCell>
-                <TableCell>
-                  <Box display="flex" justifyContent="center">
-                    <Link to={`https://starname.me/*${domain.domain}`}>
-                      <Avatar alt="Remy Sharp" src="/assets/logo_starname.jpeg" />
-                    </Link>
-                    <Link to={`https://www.mintscan.io/starname/account/${domain.admin}`}>
-                      <Avatar alt="Remy Sharp" src="/assets/logo_mintscan.png" />
-                    </Link>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {domains.map((domain) => (
+            <DomainRow key={domain._id} domain={domain} />
+          ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
               <TableCell colSpan={2} />
@@ -149,8 +146,8 @@ const DomainsTable: React.FunctionComponent<TableProps> = ({
                 inputProps: { "aria-label": "rows per page" },
                 native: true,
               }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </TableRow>
         </TableFooter>

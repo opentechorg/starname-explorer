@@ -34,9 +34,10 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
         setDomainsPage(data);
         console.log(data);
       });
-  }, [pageSettings, query]);
+  }, [pageSettings]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSearch = (query: string): void => {
+    setPageSettings({ ...pageSettings, page: 0 });
     setQuery(query);
   };
   return (

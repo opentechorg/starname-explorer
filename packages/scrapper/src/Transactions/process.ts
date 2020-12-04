@@ -4,7 +4,7 @@ import { StarnameExtension } from "../starname";
 import { isMsgDeleteDomain, MsgDeleteDomainStore } from "./DeleteDomain";
 import { isMsgRegisterAccount, MsgRegisterAccountStore } from "./RegisterAccount";
 import { isMsgRegisterDomain, MsgRegisterDomainStore } from "./RegisterDomain";
-import { isMsgRenewAccount } from "./RenewAccount";
+import { isMsgRenewAccount, MsgRenewAccountStore } from "./RenewAccount";
 import { isMsgRenewDomain, MsgRenewDomainStore } from "./RenewDomain";
 import { isMsgReplaceAccountResources } from "./ReplaceAccountResources";
 import { isMsgSetAccountMetadata } from "./SetAccountMetadata";
@@ -27,15 +27,15 @@ export async function processStarnameTx(client: StarnameExtension, msg: Msg): Pr
   if (isMsgRegisterDomain(msg)) {
     await MsgRegisterDomainStore(msg.value, client);
   } else if (isMsgRegisterAccount(msg)) {
-    await MsgRegisterAccountStore(msg.value);
+    await MsgRegisterAccountStore(msg.value, client);
   } else if (isMsgDeleteDomain(msg)) {
     MsgDeleteDomainStore(msg.value);
-  } else if (await isMsgTransferDomainAll(msg)) {
+  } else if (isMsgTransferDomainAll(msg)) {
     await MsgTransferDomainAllStore(msg.value);
   } else if (isMsgRenewDomain(msg)) {
-    await MsgRenewDomainStore(msg.value.domain, "", client);
+    await MsgRenewDomainStore(msg.value.domain, client);
   } else if (isMsgRenewAccount(msg)) {
-    await MsgRenewDomainStore(msg.value.domain, msg.value.name, client);
+    await MsgRenewAccountStore(msg.value.domain, msg.value.name, client);
   } else if (isMsgTransferAccount(msg)) {
     await MsgTransferAccountStore(msg.value);
   } else if (isMsgReplaceAccountResources(msg)) {

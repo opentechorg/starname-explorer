@@ -19,7 +19,7 @@ const SearchQuery: React.FunctionComponent<Props> = ({ onSearch }): JSX.Element 
   };
   return (
     <Form onSubmit={handleSubmit}>
-      <Box display="flex">
+      <Box sx={{ display: "flex" }}>
         <TextField
           variant="outlined"
           label="Search"
@@ -31,7 +31,7 @@ const SearchQuery: React.FunctionComponent<Props> = ({ onSearch }): JSX.Element 
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <Box marginLeft={1} />
+        <Box sx={{ marginLeft: 1 }} />
         <IconButton color="primary" aria-label="Search" type="submit">
           <SearchIcon />
         </IconButton>

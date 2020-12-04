@@ -30,6 +30,7 @@ StarnameSchema.virtual("domainRef", {
 });
 
 export interface Starname {
+  readonly _id: string;
   readonly domain: string;
   readonly name?: string;
   readonly owner: string;
@@ -39,7 +40,7 @@ export interface Starname {
   readonly valid_until?: number;
 }
 
-export interface StarnameDocument extends Starname, Document {}
+export interface StarnameDocument extends Omit<Starname, "_id">, Document {}
 
 // Export this for strong typing
 export interface StarnamePopulatedDocument extends StarnameDocument {

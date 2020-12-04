@@ -16,11 +16,11 @@ const Layout: React.FunctionComponent<Props> = ({
   onSearch,
 }): JSX.Element => {
   return (
-    <Box width={920}>
+    <React.Fragment>
       <SearchQuery onSearch={onSearch} />
-      <Box marginTop={2} />
+      <Box sx={{ marginTop: 2 }} />
       <Table domains={domains} count={count} pageSettings={pageSettings} setPageSettings={setPageSettings} />
-    </Box>
+    </React.Fragment>
   );
 };
 

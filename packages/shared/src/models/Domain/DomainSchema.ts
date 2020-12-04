@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 /**
  Good explanation of this model file
  https://medium.com/@agentwhs/complete-guide-for-typescript-for-mongoose-for-node-js-8cc0a7e470c1
@@ -18,9 +17,10 @@ const DomainSchema: Schema = new Schema(
     admin: { type: String, required: true },
     type: { type: String, required: true },
     /** Bech32 broker address */
-    broker: String,
+    broker: { type: String },
     /** Bech32 fee_payer address */
-    fee_payer: String,
+    fee_payer: { type: String },
+    valid_until: { type: Number },
   },
   { toJSON: { virtuals: true }, timestamps: true },
 );
@@ -41,6 +41,7 @@ export interface Domain {
   readonly broker: string;
   readonly fee_payer: string;
   readonly starnames?: Starname[];
+  readonly valid_until?: number;
 }
 
 export interface DomainDocument extends Omit<Domain, "_id">, Document {}
