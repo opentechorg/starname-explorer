@@ -2,7 +2,7 @@ import { LcdClient } from "@cosmjs/launchpad";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-// import { bcEventsSubscription } from "./events-subscription";
+import { bcEventsSubscription } from "./events-subscription";
 import { processHistory } from "./process-history";
 import { setupStarnameExtension } from "./starname";
 
