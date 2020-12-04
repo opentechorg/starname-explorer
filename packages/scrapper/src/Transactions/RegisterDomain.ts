@@ -3,8 +3,6 @@ import { DomainSchemaModel, StarnameSchemaModel } from "@starname-explorer/share
 
 import { AccountNft, StarnameExtension } from "../starname";
 
-const txsPerPage = Number(process.env.TXS_PER_PAGE);
-
 interface RegisterDomainValue {
   readonly domain: string;
   readonly type: string;
@@ -44,12 +42,12 @@ export async function MsgRegisterDomainStore(
 }
 
 async function getDomainAccounts(client: StarnameExtension, domain: string): Promise<void> {
-  let offset = 0;
+  const txsPerPage = Number(process.env.TXS_PER_PAGE);
   let accounts: AccountNft[] = [];
+  let page = 1;
 
   do {
-    accounts = await client.starname.queryAccountsInDomain(domain, txsPerPage, offset);
-    offset += txsPerPage;
+    accounts = await client.starname.queryAccountsInDomain(domain, txsPerPage, page++);
 
     for (const account of accounts) {
       await StarnameSchemaModel.updateOne(

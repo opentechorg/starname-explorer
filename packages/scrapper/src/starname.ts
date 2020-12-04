@@ -46,7 +46,7 @@ export interface StarnameExtension {
     readonly queryAccountsInDomain: (
       domain: string,
       results_per_page: number,
-      offset: number,
+      page: number,
     ) => Promise<AccountNft[]>;
     readonly queryDomainInfo: (name: string) => Promise<DomainNft>;
   };
@@ -93,9 +93,9 @@ export function setupStarnameExtension(base: LcdClient): StarnameExtension {
         Number((await base.txsQuery(query(1, 1))).total_count),
       queryResolve: async (starname: string) =>
         (await base.post(`/starname/query/resolve`, { starname })).result.account as AccountNft,
-      queryAccountsInDomain: async (domain: string, results_per_page: number, offset: number) =>
-        (await base.post(`/starname/query/accountsInDomain`, { domain, results_per_page, offset })).result
-          .accounts as AccountNft[],
+      queryAccountsInDomain: async (domain: string, results_per_page: number, page: number) =>
+        (await base.post(`/starname/query/accountsInDomain`, { domain, results_per_page, offset: page }))
+          .result.accounts as AccountNft[],
       queryDomainInfo: async (name: string) =>
         (await base.post(`/starname/query/domainInfo`, { name })).result.domain as DomainNft,
     },
