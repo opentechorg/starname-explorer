@@ -1,6 +1,7 @@
 import { Msg } from "@cosmjs/launchpad";
 
 import { StarnameExtension } from "../starname";
+import { isMsgDeleteAccount, MsgDeleteAccountStore } from "./DeleteAccount";
 import { isMsgDeleteDomain, MsgDeleteDomainStore } from "./DeleteDomain";
 import { isMsgRegisterAccount, MsgRegisterAccountStore } from "./RegisterAccount";
 import { isMsgRegisterDomain, MsgRegisterDomainStore } from "./RegisterDomain";
@@ -25,17 +26,19 @@ import { isMsgTransferDomainAll, MsgTransferDomainAllStore } from "./TransferDom
  */
 export async function processStarnameTx(client: StarnameExtension, msg: Msg): Promise<void> {
   if (isMsgRegisterDomain(msg)) {
-    await MsgRegisterDomainStore(msg.value, client);
+    await MsgRegisterDomainStore(client, msg.value);
   } else if (isMsgRegisterAccount(msg)) {
-    await MsgRegisterAccountStore(msg.value, client);
+    await MsgRegisterAccountStore(client, msg.value);
+  } else if (isMsgDeleteAccount(msg)) {
+    await MsgDeleteAccountStore(msg.value);
   } else if (isMsgDeleteDomain(msg)) {
     MsgDeleteDomainStore(msg.value);
   } else if (isMsgTransferDomainAll(msg)) {
     await MsgTransferDomainAllStore(msg.value);
   } else if (isMsgRenewDomain(msg)) {
-    await MsgRenewDomainStore(msg.value.domain, client);
+    await MsgRenewDomainStore(client, msg.value.domain);
   } else if (isMsgRenewAccount(msg)) {
-    await MsgRenewAccountStore(msg.value.domain, msg.value.name, client);
+    await MsgRenewAccountStore(client, msg.value.domain, msg.value.name);
   } else if (isMsgTransferAccount(msg)) {
     await MsgTransferAccountStore(msg.value);
   } else if (isMsgReplaceAccountResources(msg)) {

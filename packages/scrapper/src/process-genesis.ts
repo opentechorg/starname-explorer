@@ -1,4 +1,4 @@
-import { DomainSchemaModel, StarnameSchemaModel } from "@starname-explorer/shared";
+// import { StarnameSchemaModel } from "@starname-explorer/shared";
 import dotenv from "dotenv";
 import fs from "fs";
 import mongoose from "mongoose";
@@ -8,9 +8,13 @@ import { parser } from "stream-json";
 import { pick } from "stream-json/filters/Pick";
 import { streamArray } from "stream-json/streamers/StreamArray";
 
+import { StarnameExtension } from "./starname";
+import { DomainNftStore } from "./Transactions";
+import { getStarnameClient } from "./utils";
+
 dotenv.config();
 
-const processDomains = async (): Promise<void> => {
+async function processDomains(client: StarnameExtension): Promise<void> {
   return new Promise((resolve) => {
     console.log("Processing domains...");
     const pipeline = chain([
@@ -21,13 +25,8 @@ const processDomains = async (): Promise<void> => {
       pick({ filter: "domains" }),
       streamArray(),
       async (domain) => {
-        await DomainSchemaModel.updateOne(
-          { domain: domain.value.name },
-          { ...domain.value, domain: domain.value.name },
-          {
-            upsert: true,
-          },
-        );
+        console.log(domain);
+        await DomainNftStore(client, domain.value);
         return domain;
       },
     ]);
@@ -39,9 +38,9 @@ const processDomains = async (): Promise<void> => {
       resolve();
     });
   });
-};
+}
 
-const processStarnames = async (): Promise<void> => {
+/* const processStarnames = async (): Promise<void> => {
   return new Promise((resolve) => {
     console.log("Processing starnames...");
     const pipeline = chain([
@@ -70,7 +69,7 @@ const processStarnames = async (): Promise<void> => {
       resolve();
     });
   });
-};
+};*/
 
 mongoose.connect(`${process.env.DB_HOST_URL}/${process.env.DB_NAME}`, {
   useNewUrlParser: true,
@@ -79,8 +78,11 @@ mongoose.connect(`${process.env.DB_HOST_URL}/${process.env.DB_NAME}`, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", async function () {
-  await processDomains();
-  await processStarnames();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const client = getStarnameClient(process.env.REST_URL!);
+
+  await processDomains(client);
+  // await processStarnames();
   db.close();
   process.exit();
 });

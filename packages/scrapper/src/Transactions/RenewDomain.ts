@@ -20,7 +20,7 @@ export function isMsgRenewDomain(msg: Msg): msg is MsgRenewDomain {
   return (msg as MsgRenewDomain).type === "starname/RenewDomain";
 }
 
-export async function MsgRenewDomainStore(domain: string, client: StarnameExtension): Promise<void> {
+export async function MsgRenewDomainStore(client: StarnameExtension, domain: string): Promise<void> {
   const domainInfo = await client.starname.queryDomainInfo(domain);
 
   await DomainSchemaModel.updateOne(

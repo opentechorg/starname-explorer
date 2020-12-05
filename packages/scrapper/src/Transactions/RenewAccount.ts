@@ -22,9 +22,9 @@ export function isMsgRenewAccount(msg: Msg): msg is MsgRenewAccount {
 }
 
 export async function MsgRenewAccountStore(
+  client: StarnameExtension,
   domain: string,
   name: string,
-  client: StarnameExtension,
 ): Promise<void> {
   const accountDetails = await client.starname.queryResolve(`${name}*${domain}`);
 

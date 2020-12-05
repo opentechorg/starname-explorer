@@ -1,12 +1,4 @@
-import {
-  getAccountTransferQuery,
-  getDomainRenewsQuery,
-  getDomainTransferQuery,
-  getRegAccountQuery,
-  // getRegAccountQuery,
-  getRegDomainQuery,
-  StarnameExtension,
-} from "./starname";
+import { getRegDomainQuery, StarnameExtension } from "./starname";
 import { processStarnameTx } from "./Transactions/process";
 
 let txsPerPage = 10;
@@ -39,14 +31,6 @@ export async function processHistory(client: StarnameExtension): Promise<void> {
 
   console.log("Processing domains...");
   await fetchHistoryData(client, getRegDomainQuery);
-  console.log("Processing accounts...");
-  await fetchHistoryData(client, getRegAccountQuery);
-  console.log("Processing domain transfers...");
-  await fetchHistoryData(client, getDomainTransferQuery);
-  console.log("Processing domain renews...");
-  await fetchHistoryData(client, getDomainRenewsQuery);
-  console.log("Processing account transfers...");
-  await fetchHistoryData(client, getAccountTransferQuery);
 
   console.log("History processing done!");
 }

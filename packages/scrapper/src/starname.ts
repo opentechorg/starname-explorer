@@ -76,9 +76,6 @@ export const getAccountTransferQuery = (limit: number, page: number): string =>
 export const getDomainRenewsQuery = (limit: number, page: number): string =>
   `message.action=renew_domain&limit=${limit}&page=${page}`;
 
-export const getStarnameTransactionsQuery = (limit: number, page: number): string =>
-  `message.module=starname&limit=${limit}&page=${page}`;
-
 export function setupStarnameExtension(base: LcdClient): StarnameExtension {
   return {
     starname: {

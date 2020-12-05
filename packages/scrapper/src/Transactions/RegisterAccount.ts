@@ -27,8 +27,8 @@ export function isMsgRegisterAccount(msg: Msg): msg is MsgRegisterAccount {
 }
 
 export async function MsgRegisterAccountStore(
-  account: RegisterAccountValue,
   client: StarnameExtension,
+  account: RegisterAccountValue,
 ): Promise<void> {
   const accountDetails = await client.starname.queryResolve(`${account.name}*${account.domain}`);
 

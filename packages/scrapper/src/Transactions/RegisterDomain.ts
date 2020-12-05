@@ -1,7 +1,7 @@
 import { Msg } from "@cosmjs/launchpad";
 import { DomainSchemaModel, StarnameSchemaModel } from "@starname-explorer/shared";
 
-import { AccountNft, StarnameExtension } from "../starname";
+import { AccountNft, DomainNft, StarnameExtension } from "../starname";
 
 interface RegisterDomainValue {
   readonly domain: string;
@@ -24,21 +24,20 @@ export function isMsgRegisterDomain(msg: Msg): msg is MsgRegisterDomain {
 }
 
 export async function MsgRegisterDomainStore(
-  domain: RegisterDomainValue,
   client: StarnameExtension,
+  domain: RegisterDomainValue,
 ): Promise<void> {
-  await DomainSchemaModel.updateOne({ domain: domain.domain }, domain as any, {
+  const domainInfo = await client.starname.queryDomainInfo(domain.domain);
+
+  await DomainNftStore(client, domainInfo);
+}
+
+export async function DomainNftStore(client: StarnameExtension, domain: DomainNft): Promise<void> {
+  await DomainSchemaModel.updateOne({ domain: domain.name }, { ...domain, domain: domain.name } as any, {
     upsert: true,
   });
 
-  const domainInfo = await client.starname.queryDomainInfo(domain.domain);
-
-  await DomainSchemaModel.updateOne(
-    { domain: domainInfo.name },
-    { $set: { valid_until: domainInfo.valid_until } },
-  );
-
-  getDomainAccounts(client, domain.domain);
+  await getDomainAccounts(client, domain.name);
 }
 
 async function getDomainAccounts(client: StarnameExtension, domain: string): Promise<void> {
@@ -50,18 +49,22 @@ async function getDomainAccounts(client: StarnameExtension, domain: string): Pro
     accounts = await client.starname.queryAccountsInDomain(domain, txsPerPage, page++);
 
     for (const account of accounts) {
-      await StarnameSchemaModel.updateOne(
-        { domain: account.domain, name: account.name },
-        { ...account },
-        {
-          upsert: true,
-        },
-        (error) => {
-          if (error) {
-            console.error(error);
-          }
-        },
-      );
+      await saveDomainAccount(account);
     }
   } while (accounts.length === txsPerPage);
+}
+
+async function saveDomainAccount(account: AccountNft): Promise<void> {
+  await StarnameSchemaModel.updateOne(
+    { domain: account.domain, name: account.name },
+    { ...account },
+    {
+      upsert: true,
+    },
+    (error) => {
+      if (error) {
+        console.error(error);
+      }
+    },
+  );
 }
