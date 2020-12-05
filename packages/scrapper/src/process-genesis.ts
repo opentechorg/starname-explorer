@@ -52,8 +52,6 @@ const processStarnames = async (): Promise<void> => {
       pick({ filter: "accounts" }),
       streamArray(),
       async (account) => {
-        // console.log("new data");
-        // console.log(account.value);
         await StarnameSchemaModel.updateOne(
           { domain: account.value.domain, name: account.value.name },
           { ...account.value },
