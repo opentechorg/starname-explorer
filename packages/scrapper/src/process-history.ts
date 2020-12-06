@@ -1,4 +1,4 @@
-import { getRegDomainQuery, StarnameExtension } from "./starname";
+import { getStarnameMessageModuleQuery, StarnameExtension } from "./starname";
 import { processStarnameTx } from "./Transactions/process";
 
 let txsPerPage = 10;
@@ -10,8 +10,10 @@ async function fetchHistoryData(
   const txsCount = await client.starname.txsCount(query);
 
   const totalPages = Math.ceil(txsCount / txsPerPage);
+  console.log(`txsPerPage: ${txsPerPage}, totalPages: ${totalPages}`);
 
   for (let page = 1; page <= totalPages; page++) {
+    console.log(`processing page: ${page}`);
     try {
       const txMsgs = await client.starname.transactions(query, txsPerPage, page);
 
@@ -30,7 +32,8 @@ export async function processHistory(client: StarnameExtension): Promise<void> {
   txsPerPage = Number(process.env.TXS_PER_PAGE);
 
   console.log("Processing domains...");
-  await fetchHistoryData(client, getRegDomainQuery);
+  // await fetchHistoryData(client, getRegDomainQuery);
+  await fetchHistoryData(client, getStarnameMessageModuleQuery);
 
   console.log("History processing done!");
 }

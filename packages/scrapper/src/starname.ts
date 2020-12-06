@@ -37,6 +37,7 @@ export interface StarnameExtension {
     readonly accounts: (limit: number, page: number) => Promise<readonly MsgRegisterAccount[]>;
     readonly accountTransfers: (limit: number, page: number) => Promise<readonly MsgTransferAccount[]>;
     readonly txsCount: (query: (limit: number, page: number) => string) => Promise<number>;
+    readonly starnameModule: (limit: number, page: number) => Promise<readonly Msg[]>;
     readonly transactions: (
       query: (limit: number, page: number) => string,
       limit: number,
@@ -76,6 +77,9 @@ export const getAccountTransferQuery = (limit: number, page: number): string =>
 export const getDomainRenewsQuery = (limit: number, page: number): string =>
   `message.action=renew_domain&limit=${limit}&page=${page}`;
 
+export const getStarnameMessageModuleQuery = (limit: number, page: number): string =>
+  `message.module=starname&limit=${limit}&page=${page}`;
+
 export function setupStarnameExtension(base: LcdClient): StarnameExtension {
   return {
     starname: {
@@ -84,6 +88,7 @@ export function setupStarnameExtension(base: LcdClient): StarnameExtension {
       domainRenews: getStarnameData<MsgRenewDomain>(base, getDomainRenewsQuery),
       accounts: getStarnameData<MsgRegisterAccount>(base, getRegAccountQuery),
       accountTransfers: getStarnameData<MsgTransferAccount>(base, getAccountTransferQuery),
+      starnameModule: getStarnameData<MsgTransferAccount>(base, getStarnameMessageModuleQuery),
       transactions: async (query: (limit: number, page: number) => string, limit: number, page: number) =>
         getStarnameData<Msg>(base, query)(limit, page),
       txsCount: async (query: (limit: number, page: number) => string) =>

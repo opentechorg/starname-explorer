@@ -1,4 +1,3 @@
-// import { StarnameSchemaModel } from "@starname-explorer/shared";
 import dotenv from "dotenv";
 import fs from "fs";
 import mongoose from "mongoose";
@@ -8,13 +7,11 @@ import { parser } from "stream-json";
 import { pick } from "stream-json/filters/Pick";
 import { streamArray } from "stream-json/streamers/StreamArray";
 
-import { StarnameExtension } from "./starname";
-import { DomainNftStore } from "./Transactions";
-import { getStarnameClient } from "./utils";
+import { saveAccountNft, saveDomainNft } from "./Transactions";
 
 dotenv.config();
 
-async function processDomains(client: StarnameExtension): Promise<void> {
+async function processDomains(): Promise<void> {
   return new Promise((resolve) => {
     console.log("Processing domains...");
     const pipeline = chain([
@@ -25,8 +22,7 @@ async function processDomains(client: StarnameExtension): Promise<void> {
       pick({ filter: "domains" }),
       streamArray(),
       async (domain) => {
-        console.log(domain);
-        await DomainNftStore(client, domain.value);
+        await saveDomainNft(domain.value);
         return domain;
       },
     ]);
@@ -40,7 +36,7 @@ async function processDomains(client: StarnameExtension): Promise<void> {
   });
 }
 
-/* const processStarnames = async (): Promise<void> => {
+const processStarnames = async (): Promise<void> => {
   return new Promise((resolve) => {
     console.log("Processing starnames...");
     const pipeline = chain([
@@ -51,13 +47,7 @@ async function processDomains(client: StarnameExtension): Promise<void> {
       pick({ filter: "accounts" }),
       streamArray(),
       async (account) => {
-        await StarnameSchemaModel.updateOne(
-          { domain: account.value.domain, name: account.value.name },
-          { ...account.value },
-          {
-            upsert: true,
-          },
-        );
+        await saveAccountNft(account.value);
         return account;
       },
     ]);
@@ -69,7 +59,7 @@ async function processDomains(client: StarnameExtension): Promise<void> {
       resolve();
     });
   });
-};*/
+};
 
 mongoose.connect(`${process.env.DB_HOST_URL}/${process.env.DB_NAME}`, {
   useNewUrlParser: true,
@@ -78,11 +68,8 @@ mongoose.connect(`${process.env.DB_HOST_URL}/${process.env.DB_NAME}`, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", async function () {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const client = getStarnameClient(process.env.REST_URL!);
-
-  await processDomains(client);
-  // await processStarnames();
+  await processDomains();
+  await processStarnames();
   db.close();
   process.exit();
 });

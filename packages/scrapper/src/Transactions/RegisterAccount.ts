@@ -1,7 +1,7 @@
 import { Msg } from "@cosmjs/launchpad";
 import { StarnameSchemaModel } from "@starname-explorer/shared";
 
-import { StarnameExtension } from "../starname";
+import { AccountNft, StarnameExtension } from "../starname";
 
 interface RegisterAccountValue {
   readonly domain: string;
@@ -32,7 +32,9 @@ export async function MsgRegisterAccountStore(
 ): Promise<void> {
   const accountDetails = await client.starname.queryResolve(`${account.name}*${account.domain}`);
 
-  await StarnameSchemaModel.updateOne(
+  await saveAccountNft(accountDetails);
+
+  /* await StarnameSchemaModel.updateOne(
     { domain: accountDetails.domain, name: accountDetails.name },
     { $set: { valid_until: accountDetails.valid_until } },
   );
@@ -40,6 +42,21 @@ export async function MsgRegisterAccountStore(
   await StarnameSchemaModel.updateOne(
     { domain: account.domain, name: account.name },
     accountDetails,
+    {
+      upsert: true,
+    },
+    (error) => {
+      if (error) {
+        console.error(error);
+      }
+    },
+  );*/
+}
+
+export async function saveAccountNft(account: AccountNft): Promise<void> {
+  await StarnameSchemaModel.updateOne(
+    { domain: account.domain, name: account.name },
+    account,
     {
       upsert: true,
     },

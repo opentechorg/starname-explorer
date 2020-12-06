@@ -1,7 +1,7 @@
 import { Msg } from "@cosmjs/launchpad";
-import { DomainSchemaModel, StarnameSchemaModel } from "@starname-explorer/shared";
+import { DomainSchemaModel } from "@starname-explorer/shared";
 
-import { AccountNft, DomainNft, StarnameExtension } from "../starname";
+import { DomainNft, StarnameExtension } from "../starname";
 
 interface RegisterDomainValue {
   readonly domain: string;
@@ -29,18 +29,18 @@ export async function MsgRegisterDomainStore(
 ): Promise<void> {
   const domainInfo = await client.starname.queryDomainInfo(domain.domain);
 
-  await DomainNftStore(client, domainInfo);
+  await saveDomainNft(domainInfo);
 }
 
-export async function DomainNftStore(client: StarnameExtension, domain: DomainNft): Promise<void> {
+export async function saveDomainNft(domain: DomainNft): Promise<void> {
   await DomainSchemaModel.updateOne({ domain: domain.name }, { ...domain, domain: domain.name } as any, {
     upsert: true,
   });
 
-  await getDomainAccounts(client, domain.name);
+  // await getDomainAccounts(client, domain.name);
 }
 
-async function getDomainAccounts(client: StarnameExtension, domain: string): Promise<void> {
+/* async function _getDomainAccounts(client: StarnameExtension, domain: string): Promise<void> {
   const txsPerPage = Number(process.env.TXS_PER_PAGE);
   let accounts: AccountNft[] = [];
   let page = 1;
@@ -68,3 +68,4 @@ async function saveDomainAccount(account: AccountNft): Promise<void> {
     },
   );
 }
+*/
