@@ -32,7 +32,7 @@ export async function processStarnameTx(client: StarnameExtension, msg: Msg): Pr
   } else if (isMsgDeleteAccount(msg)) {
     await MsgDeleteAccountStore(msg.value);
   } else if (isMsgDeleteDomain(msg)) {
-    MsgDeleteDomainStore(msg.value);
+    await MsgDeleteDomainStore(msg.value);
   } else if (isMsgTransferDomainAll(msg)) {
     await MsgTransferDomainAllStore(msg.value);
   } else if (isMsgRenewDomain(msg)) {
