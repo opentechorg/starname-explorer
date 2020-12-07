@@ -15,6 +15,7 @@ import TableCell from "../../../components/TableCell";
 import TableHead from "../../../components/TableHead";
 import TableRow from "../../../components/TableRow";
 import Typography from "../../../components/Typography";
+import StarnamesTable from "./StarnamesTable";
 
 const useRowStyles = makeStyles((theme) => ({
   root: {
@@ -70,40 +71,7 @@ const DomainRow: React.FunctionComponent<Props> = ({ domain }): JSX.Element => {
               <Typography variant="h6" gutterBottom component="div">
                 Starnames
               </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead className={classes.headerStyle}>
-                  <TableRow>
-                    <TableCell>Starname</TableCell>
-                    <TableCell width={600}>Owner</TableCell>
-                    {domain.type === "open" && <TableCell>Valid until</TableCell>}
-                    <TableCell width={56}></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {domain.starnames
-                    .filter((starname) => starname.name)
-                    .map((starname) => (
-                      <TableRow key={starname._id}>
-                        <TableCell component="th" scope="row">
-                          {starname.name}*{starname.domain}
-                        </TableCell>
-                        <TableCell>{starname.owner}</TableCell>
-                        {domain.type === "open" && (
-                          <TableCell>{new Date(starname.valid_until * 1000).toLocaleDateString()}</TableCell>
-                        )}
-                        <TableCell>
-                          <Link to={`https://www.mintscan.io/starname/account/${starname.owner}`}>
-                            <Avatar
-                              alt="Mintscan"
-                              src="/assets/logo_mintscan.png"
-                              className={classes.starnameAvatar}
-                            />
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
+              <StarnamesTable starnames={domain.starnames} domainType={domain.type} />
             </Box>
           </Collapse>
         </TableCell>
