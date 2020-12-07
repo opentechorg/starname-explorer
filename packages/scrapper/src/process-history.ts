@@ -13,7 +13,6 @@ async function fetchHistoryData(
   console.log(`txsPerPage: ${txsPerPage}, totalPages: ${totalPages}`);
 
   for (let page = 1; page <= totalPages; page++) {
-    console.log(`processing page: ${page}`);
     try {
       const txMsgs = await client.starname.transactions(query, txsPerPage, page);
 
