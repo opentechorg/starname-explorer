@@ -14,12 +14,19 @@ const Layout: React.FunctionComponent<Props> = ({
   pageSettings,
   setPageSettings,
   onSearch,
+  onBuyDomain,
 }): JSX.Element => {
   return (
     <React.Fragment>
       <SearchQuery onSearch={onSearch} />
       <Box sx={{ marginTop: 2 }} />
-      <Table domains={domains} count={count} pageSettings={pageSettings} setPageSettings={setPageSettings} />
+      <Table
+        domains={domains}
+        count={count}
+        pageSettings={pageSettings}
+        setPageSettings={setPageSettings}
+        onBuyDomain={onBuyDomain}
+      />
     </React.Fragment>
   );
 };
