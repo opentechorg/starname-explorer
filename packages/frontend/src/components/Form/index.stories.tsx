@@ -43,7 +43,7 @@ const FormStory = (): JSX.Element => {
   return (
     <Form onSubmit={handleSubmit}>
       <TextField label="Unique Identifier" placeholder="Unique Identifier" form={form} name={TEXT_FIELD} />
-      <Box display="block" marginBottom={2}>
+      <Box sx={{ display: "block", marginBottom: 2 }}>
         <Checkbox
           form={form}
           name={CHECKBOX_FIELD}
