@@ -1,7 +1,6 @@
 import { Msg } from "@cosmjs/launchpad";
-import { StarnameSchemaModel } from "@starname-explorer/shared";
 
-interface TransferAccountValue {
+export interface TransferAccountValue {
   readonly domain: string;
   readonly name: string;
   /** Bech32 owner address */
@@ -20,11 +19,4 @@ export interface MsgTransferAccount extends Msg {
 
 export function isMsgTransferAccount(msg: Msg): msg is MsgTransferAccount {
   return (msg as MsgTransferAccount).type === "starname/TransferAccount";
-}
-
-export async function MsgTransferAccountStore(transfer: TransferAccountValue): Promise<void> {
-  await StarnameSchemaModel.updateOne(
-    { domain: transfer.domain, name: transfer.name },
-    { $set: { owner: transfer.new_owner } },
-  );
 }

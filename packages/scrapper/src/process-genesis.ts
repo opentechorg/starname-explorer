@@ -7,7 +7,7 @@ import { parser } from "stream-json";
 import { pick } from "stream-json/filters/Pick";
 import { streamArray } from "stream-json/streamers/StreamArray";
 
-import { saveAccountNft, saveDomainNft } from "./Transactions";
+import { saveAccountNft, saveDomainNft } from "./database";
 
 dotenv.config();
 

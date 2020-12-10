@@ -40,6 +40,7 @@ export interface TableProps {
   readonly count: number;
   readonly pageSettings: TablePageSettings;
   readonly setPageSettings: React.Dispatch<React.SetStateAction<TablePageSettings>>;
+  readonly onBuyDomain: (domain: Domain) => Promise<void>;
 }
 
 const DomainsTable: React.FunctionComponent<TableProps> = ({
@@ -47,6 +48,7 @@ const DomainsTable: React.FunctionComponent<TableProps> = ({
   domains,
   pageSettings,
   setPageSettings,
+  onBuyDomain,
 }): JSX.Element => {
   const emptyRows =
     pageSettings.limit - Math.min(pageSettings.limit, count - pageSettings.page * pageSettings.limit);
@@ -122,11 +124,12 @@ const DomainsTable: React.FunctionComponent<TableProps> = ({
             <TableCell align="center" width={120}>
               Resources
             </TableCell>
+            <TableCell width={56}>Order</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {domains.map((domain) => (
-            <DomainRow key={domain._id} domain={domain} />
+            <DomainRow key={domain._id} domain={domain} onBuyDomain={onBuyDomain} />
           ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>

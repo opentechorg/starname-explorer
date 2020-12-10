@@ -1,5 +1,6 @@
 import React from "react";
 
+import Box from "../Box";
 import Container from "../Container";
 
 interface Props {
@@ -7,7 +8,9 @@ interface Props {
 }
 
 const Layout: React.FunctionComponent<Props> = ({ children }): JSX.Element => (
-  <Container maxWidth="lg">{children}</Container>
+  <Box sx={{ margin: 2 }}>
+    <Container maxWidth="lg">{children}</Container>
+  </Box>
 );
 
 export default Layout;

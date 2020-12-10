@@ -1,9 +1,6 @@
 import { Msg } from "@cosmjs/launchpad";
-import { DomainSchemaModel } from "@starname-explorer/shared";
 
-import { StarnameExtension } from "../starname";
-
-interface RenewDomainValue {
+export interface RenewDomainValue {
   readonly domain: string;
   /** Bech32 signer address */
   readonly signer: string;
@@ -18,13 +15,4 @@ export interface MsgRenewDomain extends Msg {
 
 export function isMsgRenewDomain(msg: Msg): msg is MsgRenewDomain {
   return (msg as MsgRenewDomain).type === "starname/RenewDomain";
-}
-
-export async function MsgRenewDomainStore(client: StarnameExtension, domain: string): Promise<void> {
-  const domainInfo = await client.starname.queryDomainInfo(domain);
-
-  await DomainSchemaModel.updateOne(
-    { domain: domainInfo.name },
-    { $set: { valid_until: domainInfo.valid_until } },
-  );
 }

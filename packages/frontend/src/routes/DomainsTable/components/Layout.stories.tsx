@@ -1,32 +1,85 @@
+import { Domain } from "@starname-explorer/shared";
+import { action } from "@storybook/addon-actions";
 import React from "react";
 
-import { Consent } from "../../../store/consents";
 import Layout from "./Layout";
+import { TablePageSettings } from "./Table";
 
-const storyMeta = { title: "Show consents" };
+const storyMeta = { title: "Show domains" };
 
 export default storyMeta;
 
-function createData(name: string, email: string, titles: string[]): Consent {
-  return { name, email, items: titles.map((title) => ({ title: title, agree: true })) };
+function createDomainData(
+  id: string,
+  domain: string,
+  admin: string,
+  valid_until: number,
+  type: string,
+): Domain {
+  return ({ _id: id, domain, admin, valid_until, type, starnames: [] } as unknown) as Domain;
 }
 
-const consents = [
-  createData("Bojack Horseman", "bojack@horseman.com", ["Receive newsletter", "Be shown targeted ads"]),
-  createData("Princess Carolyn", "princess@manager.com", ["Receive newsletter"]),
-  createData("User one", "one@user.com", ["Receive newsletter", "Contribute to anonymous usage statistics"]),
-  createData("User two", "two@user.com", ["Receive newsletter", "Contribute to anonymous usage statistics"]),
-  createData("User three", "three@user.com", [
-    "Be shown targeted ads",
-    "Contribute to anonymous usage statistics",
-  ]),
-  createData("User four", "four@user.com", [
-    "Be shown targeted ads",
-    "Receive newsletter",
-    "Contribute to anonymous usage statistics",
-  ]),
-  createData("User five", "five@user.com", ["Receive newsletter", "Be shown targeted ads"]),
-  createData("User six", "six@user.com", ["Receive newsletter", "Contribute to anonymous usage statistics"]),
+const domainsData = [
+  createDomainData(
+    "5fcc1d04262402f79fa39c1e",
+    "iov",
+    "star1nrnx8mft8mks3l2akduxdjlf8rwqs8r9l36a78",
+    1924991999,
+    "open",
+  ),
+  createDomainData(
+    "5fcc1d04262402f79fa39c20",
+    "_agentgirl_",
+    "star1v794jm5am4qpc52kvgmxxm2j50kgu9mjszcq96",
+    1613556000,
+    "closed",
+  ),
+  createDomainData(
+    "5fcc1d04262402f79fa39c22",
+    "_asia_amore",
+    "star1v794jm5am4qpc52kvgmxxm2j50kgu9mjszcq96",
+    1615975200,
+    "closed",
+  ),
+  createDomainData(
+    "5fcc1d04262402f79fa39c24",
+    "_cristinereyes_",
+    "star1v794jm5am4qpc52kvgmxxm2j50kgu9mjszcq96",
+    1611136800,
+    "closed",
+  ),
+  createDomainData(
+    "5fcc1d04262402f79fa39c26",
+    "_emmachamberlain",
+    "star1nrnx8mft8mks3l2akduxdjlf8rwqs8r9l36a78",
+    1615975200,
+    "closed",
+  ),
+  createDomainData(
+    "5fcc1d04262402f79fa39c52",
+    "1010tires",
+    "star1v794jm5am4qpc52kvgmxxm2j50kgu9mjszcq96",
+    1608112800,
+    "closed",
+  ),
 ];
 
-export const layout = (): JSX.Element => <Layout consents={consents} />;
+const pageSettingsData: TablePageSettings = {
+  sorting: {
+    column: "domain",
+    order: 1,
+  },
+  page: 0,
+  limit: 25,
+};
+
+export const layout = (): JSX.Element => (
+  <Layout
+    domains={domainsData}
+    count={5}
+    pageSettings={pageSettingsData}
+    setPageSettings={action("setPageSettings")}
+    onSearch={action("onSearch")}
+    onBuyDomain={action("onBuyDomain")}
+  />
+);

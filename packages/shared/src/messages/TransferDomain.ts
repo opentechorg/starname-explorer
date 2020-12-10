@@ -1,7 +1,6 @@
 import { Msg } from "@cosmjs/launchpad";
-import { DomainSchemaModel } from "@starname-explorer/shared";
 
-interface TransferDomainAllValue {
+export interface TransferDomainAllValue {
   readonly domain: string;
   /** Bech32 owner address */
   readonly owner: string;
@@ -19,8 +18,4 @@ export interface MsgTransferDomainAll extends Msg {
 
 export function isMsgTransferDomainAll(msg: Msg): msg is MsgTransferDomainAll {
   return (msg as MsgTransferDomainAll).type === "starname/TransferDomainAll";
-}
-
-export async function MsgTransferDomainAllStore(transfer: TransferDomainAllValue): Promise<void> {
-  await DomainSchemaModel.updateOne({ domain: transfer.domain }, { $set: { admin: transfer.new_admin } });
 }

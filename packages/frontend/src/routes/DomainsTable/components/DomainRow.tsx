@@ -34,11 +34,14 @@ const useRowStyles = makeStyles((theme) => ({
 
 interface Props {
   readonly domain: Domain;
+  readonly onBuyDomain: (domain: Domain) => void;
 }
 
-const DomainRow: React.FunctionComponent<Props> = ({ domain }): JSX.Element => {
+const DomainRow: React.FunctionComponent<Props> = ({ domain, onBuyDomain }): JSX.Element => {
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
+
+  const onClick = (): void => onBuyDomain(domain);
 
   return (
     <React.Fragment>
@@ -62,6 +65,9 @@ const DomainRow: React.FunctionComponent<Props> = ({ domain }): JSX.Element => {
               <Avatar alt="Mintscan" src="/assets/logo_mintscan.png" />
             </Link>
           </Box>
+        </TableCell>
+        <TableCell>
+          <Box onClick={onClick}>Buy</Box>
         </TableCell>
       </TableRow>
       <TableRow>

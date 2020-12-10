@@ -3,7 +3,5 @@ export * from "./RegisterAccount";
 export * from "./RegisterDomain";
 export * from "./RenewAccount";
 export * from "./RenewDomain";
-export * from "./ReplaceAccountResources";
-export * from "./SetAccountMetadata";
 export * from "./TransferAccount";
 export * from "./TransferDomain";

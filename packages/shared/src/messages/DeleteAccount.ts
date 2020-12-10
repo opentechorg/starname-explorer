@@ -1,7 +1,6 @@
 import { Msg } from "@cosmjs/launchpad";
-import { StarnameSchemaModel } from "@starname-explorer/shared";
 
-interface DeleteAccount {
+export interface DeleteAccountValue {
   readonly domain: string;
   readonly name: string;
   /** Bech32 owner address */
@@ -12,13 +11,9 @@ interface DeleteAccount {
 
 export interface MsgDeleteAccount extends Msg {
   readonly type: "starname/DeleteAccount";
-  readonly value: DeleteAccount;
+  readonly value: DeleteAccountValue;
 }
 
 export function isMsgDeleteAccount(msg: Msg): msg is MsgDeleteAccount {
   return (msg as MsgDeleteAccount).type === "starname/DeleteAccount";
-}
-
-export async function MsgDeleteAccountStore(accountToDelete: DeleteAccount): Promise<void> {
-  await StarnameSchemaModel.deleteOne({ domain: accountToDelete.domain, name: accountToDelete.name });
 }

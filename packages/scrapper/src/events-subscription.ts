@@ -1,7 +1,7 @@
 import { LcdClient, Msg } from "@cosmjs/launchpad";
 import { ReconnectingSocket, SocketWrapperMessageEvent } from "@cosmjs/socket";
 
-import { processStarnameTx } from "./Transactions/process";
+import { processStarnameTx } from "./database/process";
 import { isJsonRpcErrorResponse, JsonRpcResponse, LcdStarnameClient, SubscriptionEvent } from "./types";
 
 async function getStarnameTxMsg(client: LcdClient, event: SubscriptionEvent): Promise<Msg[]> {
