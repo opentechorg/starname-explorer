@@ -1,5 +1,5 @@
+import { processStarnameTx } from "./database/process";
 import { getStarnameMessageModuleQuery, StarnameExtension } from "./starname";
-import { processStarnameTx } from "./Transactions/process";
 
 let txsPerPage = 10;
 

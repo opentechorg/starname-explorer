@@ -1,33 +1,13 @@
 import { LcdClient, Msg } from "@cosmjs/launchpad";
-
 import {
+  AccountNft,
+  DomainNft,
   MsgRegisterAccount,
   MsgRegisterDomain,
   MsgRenewDomain,
   MsgTransferAccount,
   MsgTransferDomainAll,
-} from "./Transactions";
-
-export interface DomainNft {
-  readonly name: string;
-  /** Bech32 account address */
-  readonly admin: string;
-  /** Bech32 account address */
-  readonly broker: string;
-  readonly type: string;
-  readonly valid_until: number;
-}
-
-export interface AccountNft {
-  readonly domain: string;
-  readonly name: string;
-  /** Bech32 account address */
-  readonly owner: string;
-  /** Bech32 account address */
-  readonly broker: string;
-  readonly metadata_uri: string;
-  readonly valid_until: number;
-}
+} from "@starname-explorer/shared";
 
 export interface StarnameExtension {
   readonly starname: {
