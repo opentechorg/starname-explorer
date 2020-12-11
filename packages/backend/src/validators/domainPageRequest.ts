@@ -3,11 +3,11 @@ import Ajv, { JSONSchemaType } from "ajv";
 const ajv = new Ajv({ coerceTypes: true });
 
 const ColumnValues = ["domain", "admin", "valid_until"] as const;
-type Columns = typeof ColumnValues[number];
+export type Columns = typeof ColumnValues[number];
 
 type SortOrder = 1 | -1;
 
-export interface DoaminTablePageReq {
+export interface DomainTablePageReq {
   sortColumn: Columns;
   sortOrder: SortOrder;
   page: number;
@@ -16,7 +16,7 @@ export interface DoaminTablePageReq {
 }
 
 // optional schema type annotation for schema to match MyData type
-const schema: JSONSchemaType<DoaminTablePageReq> = {
+const schema: JSONSchemaType<DomainTablePageReq> = {
   type: "object",
   properties: {
     page: { type: "number", minimum: 1, default: 1 },
