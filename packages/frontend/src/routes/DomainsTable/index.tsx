@@ -62,7 +62,8 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
   const onBuyDomain = async (domain: Domain): Promise<void> => {
     try {
       const txConnection = await TxConnection.init();
-      await txConnection.registerDomain(domain.domain);
+      const result = await txConnection.registerDomain(domain.domain);
+      console.log(result);
     } catch (err) {
       if (err instanceof KeplrNotFoundError) {
         setSnackbar({
