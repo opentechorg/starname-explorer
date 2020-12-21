@@ -2,6 +2,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { Domain } from "@starname-explorer/shared";
 import React from "react";
 
@@ -9,10 +10,7 @@ import Avatar from "../../../components/Avatar";
 import Box from "../../../components/Box";
 import Collapse from "../../../components/Collapse";
 import Link from "../../../components/Link";
-import Table from "../../../components/Table";
-import TableBody from "../../../components/TableBody";
 import TableCell from "../../../components/TableCell";
-import TableHead from "../../../components/TableHead";
 import TableRow from "../../../components/TableRow";
 import Typography from "../../../components/Typography";
 import StarnamesTable from "./StarnamesTable";
@@ -67,7 +65,9 @@ const DomainRow: React.FunctionComponent<Props> = ({ domain, onBuyDomain }): JSX
           </Box>
         </TableCell>
         <TableCell>
-          <Box onClick={onClick}>Buy</Box>
+          <Box onClick={onClick} sx={{ cursor: "pointer" }}>
+            <ShoppingCartIcon color="primary" fontSize="large" />
+          </Box>
         </TableCell>
       </TableRow>
       <TableRow>
