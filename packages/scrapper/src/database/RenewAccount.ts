@@ -1,6 +1,4 @@
-import { StarnameSchemaModel } from "@starname-explorer/shared";
-
-import { StarnameExtension } from "../starname";
+import { StarnameExtension, StarnameSchemaModel } from "@starname-explorer/shared";
 
 export async function RenewAccount(client: StarnameExtension, domain: string, name: string): Promise<void> {
   const accountDetails = await client.starname.queryResolve(`${name}*${domain}`);

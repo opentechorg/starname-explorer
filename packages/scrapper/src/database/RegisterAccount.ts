@@ -1,6 +1,9 @@
-import { AccountNft, RegisterAccountValue, StarnameSchemaModel } from "@starname-explorer/shared";
-
-import { StarnameExtension } from "../starname";
+import {
+  AccountNft,
+  RegisterAccountValue,
+  StarnameExtension,
+  StarnameSchemaModel,
+} from "@starname-explorer/shared";
 
 export async function RegisterAccount(
   client: StarnameExtension,

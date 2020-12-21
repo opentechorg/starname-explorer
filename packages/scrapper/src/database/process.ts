@@ -10,9 +10,9 @@ import {
   isMsgSetAccountMetadata,
   isMsgTransferAccount,
   isMsgTransferDomainAll,
+  StarnameExtension,
 } from "@starname-explorer/shared";
 
-import { StarnameExtension } from "../starname";
 import { DeleteAccount } from "./DeleteAccount";
 import { DeleteDomain } from "./DeleteDomain";
 import { RegisterAccount } from "./RegisterAccount";

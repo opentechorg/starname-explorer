@@ -1,5 +1,6 @@
+import { getStarnameMessageModuleQuery, StarnameExtension } from "@starname-explorer/shared";
+
 import { processStarnameTx } from "./database/process";
-import { getStarnameMessageModuleQuery, StarnameExtension } from "./starname";
 
 let txsPerPage = 10;
 
@@ -31,7 +32,6 @@ export async function processHistory(client: StarnameExtension): Promise<void> {
   txsPerPage = Number(process.env.TXS_PER_PAGE);
 
   console.log("Processing domains...");
-  // await fetchHistoryData(client, getRegDomainQuery);
   await fetchHistoryData(client, getStarnameMessageModuleQuery);
 
   console.log("History processing done!");

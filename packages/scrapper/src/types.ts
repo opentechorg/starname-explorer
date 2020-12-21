@@ -1,6 +1,5 @@
 import { LcdClient } from "@cosmjs/launchpad";
-
-import { StarnameExtension } from "./starname";
+import { StarnameExtension } from "@starname-explorer/shared";
 
 export interface JsonRpcSuccessResponse {
   readonly jsonrpc: "2.0";

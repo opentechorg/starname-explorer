@@ -1,10 +1,10 @@
 import { LcdClient } from "@cosmjs/launchpad";
+import { setupStarnameExtension } from "@starname-explorer/shared";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import { bcEventsSubscription } from "./events-subscription";
 import { processHistory } from "./process-history";
-import { setupStarnameExtension } from "./starname";
 
 dotenv.config();
 

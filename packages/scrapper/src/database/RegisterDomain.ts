@@ -1,6 +1,9 @@
-import { DomainNft, DomainSchemaModel, RegisterDomainValue } from "@starname-explorer/shared";
-
-import { StarnameExtension } from "../starname";
+import {
+  DomainNft,
+  DomainSchemaModel,
+  RegisterDomainValue,
+  StarnameExtension,
+} from "@starname-explorer/shared";
 
 export async function RegisterDomain(client: StarnameExtension, domain: RegisterDomainValue): Promise<void> {
   const domainInfo = await client.starname.queryDomainInfo(domain.domain);
