@@ -1,9 +1,10 @@
 import { Decimal } from "@cosmjs/math";
+import { Fees } from "@starname-explorer/shared";
 import { Store } from "redux";
 
 import { aNewStore } from "../../store";
 import { AllActions, RootState } from "../reducers";
-import { Fees, initFees } from ".";
+import { initFees } from ".";
 import { setFeesAction } from "./actions";
 
 describe("Fees reducer", () => {
@@ -17,7 +18,7 @@ describe("Fees reducer", () => {
     expect(fees).toEqual({ loading: false, data: initFees, error: undefined });
   });
 
-  it("dispatches consent correctly", async () => {
+  it("dispatches fees correctly", async () => {
     const store = aNewStore();
     const fees: Fees = {
       fee_coin_denom: "iov",
