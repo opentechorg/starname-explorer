@@ -1,9 +1,15 @@
+import { isBroadcastTxFailure } from "@cosmjs/launchpad";
+import { Decimal, Uint32 } from "@cosmjs/math";
 import { Color } from "@material-ui/core/Alert";
-import { Domain } from "@starname-explorer/shared";
+import { Domain, Fees } from "@starname-explorer/shared";
 import React from "react";
+import { useSelector } from "react-redux";
 
+import { FeeCalculation } from "../../classes/FeeCalculation";
 import { AccountNotFoundError, KeplrNotFoundError, TxConnection } from "../../classes/TxConnection";
+import { PriceDialog } from "../../components/PriceDialog";
 import Snackbar from "../../components/Snackbar";
+import { RootState } from "../../store/reducers";
 import { ResultsPage } from "../../types/ResultsPage";
 import { Config } from "../../utils/config";
 import Layout from "./components/Layout";
@@ -16,6 +22,11 @@ interface SnackbarProps {
 }
 
 const DomainsTable: React.FunctionComponent = (): JSX.Element => {
+  const fees = useSelector((state: RootState) => state.fees.data);
+  const [buyAsset, setAssetToBuy] = React.useState<{ show: boolean; fee?: number; domain?: Domain }>({
+    show: false,
+  });
+
   const [snackbar, setSnackbar] = React.useState<SnackbarProps>({
     open: false,
     message: "",
@@ -59,11 +70,34 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
     setSnackbar({ open: false, message: "", severity: "success" });
   };
 
+  const handleClose = (): void => {
+    setAssetToBuy({ show: false });
+  };
+
   const onBuyDomain = async (domain: Domain): Promise<void> => {
+    const calc = new FeeCalculation(domain, fees);
+    const fee = calc.calculateDomainFeeIov();
+    setAssetToBuy({ show: true, domain, fee });
+  };
+
+  const handleAgree = (): void => {
+    if (buyAsset.show && buyAsset.domain) {
+      proceedToPayment(buyAsset.domain);
+    }
+  };
+
+  const proceedToPayment = async (domain: Domain): Promise<void> => {
     try {
       const txConnection = await TxConnection.init();
       const result = await txConnection.registerDomain(domain.domain);
       console.log(result);
+      if (isBroadcastTxFailure(result)) {
+        setSnackbar({
+          open: true,
+          message: result.rawLog,
+          severity: "error",
+        });
+      }
     } catch (err) {
       if (err instanceof KeplrNotFoundError) {
         setSnackbar({
@@ -80,6 +114,8 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
       } else {
         setSnackbar({ open: true, message: err.message, severity: "error" });
       }
+    } finally {
+      handleClose();
     }
   };
 
@@ -98,6 +134,15 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
       <Snackbar open={snackbar.open} close={close} severity={snackbar.severity}>
         {snackbar.message}
       </Snackbar>
+      <PriceDialog
+        open={buyAsset.show}
+        handleClose={handleClose}
+        handleAgree={handleAgree}
+        title="Are you ready to buy this starname?"
+      >
+        You can buy <strong>*{buyAsset.domain?.domain}</strong> starname for only{" "}
+        <strong>{buyAsset.fee} IOV</strong> and small transaction fee in Keplr extension.
+      </PriceDialog>
     </React.Fragment>
   );
 };

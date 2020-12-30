@@ -5,6 +5,7 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { Domain } from "@starname-explorer/shared";
 import React from "react";
+import { useSelector } from "react-redux";
 
 import Avatar from "../../../components/Avatar";
 import Box from "../../../components/Box";
@@ -13,6 +14,7 @@ import Link from "../../../components/Link";
 import TableCell from "../../../components/TableCell";
 import TableRow from "../../../components/TableRow";
 import Typography from "../../../components/Typography";
+import { RootState } from "../../../store/reducers";
 import StarnamesTable from "./StarnamesTable";
 
 const useRowStyles = makeStyles((theme) => ({
@@ -36,10 +38,21 @@ interface Props {
 }
 
 const DomainRow: React.FunctionComponent<Props> = ({ domain, onBuyDomain }): JSX.Element => {
+  const iovConfig = useSelector((state: RootState) => state.iovConfiguration.data);
+
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
   const onClick = (): void => onBuyDomain(domain);
+
+  const today = new Date();
+
+  const gracePeriodInSeconds = iovConfig.domain_grace_period / 1000;
+
+  let expirationDate = new Date(domain.valid_until * 1000);
+  if (iovConfig.domain_grace_period) {
+    expirationDate = new Date((domain.valid_until + gracePeriodInSeconds) * 1_000);
+  }
 
   return (
     <React.Fragment>
@@ -53,7 +66,7 @@ const DomainRow: React.FunctionComponent<Props> = ({ domain, onBuyDomain }): JSX
         </TableCell>
         <TableCell>{domain.domain}</TableCell>
         <TableCell>{domain.admin}</TableCell>
-        <TableCell>{new Date(domain.valid_until * 1000).toLocaleDateString()}</TableCell>
+        <TableCell>{expirationDate.toLocaleDateString()}</TableCell>
         <TableCell>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Link to={`https://starname.me/*${domain.domain}`}>
@@ -65,9 +78,11 @@ const DomainRow: React.FunctionComponent<Props> = ({ domain, onBuyDomain }): JSX
           </Box>
         </TableCell>
         <TableCell>
-          <Box onClick={onClick} sx={{ cursor: "pointer" }}>
-            <ShoppingCartIcon color="primary" fontSize="large" />
-          </Box>
+          {today >= expirationDate && (
+            <Box onClick={onClick} sx={{ cursor: "pointer", display: "flex" }}>
+              <ShoppingCartIcon color="primary" fontSize="large" />
+            </Box>
+          )}
         </TableCell>
       </TableRow>
       <TableRow>

@@ -7,7 +7,7 @@ import {
   MsgTransferAccount,
   MsgTransferDomainAll,
 } from "../messages";
-import { AccountNft, DomainNft, Fees, IovConfig, wrapFees } from "../types";
+import { AccountNft, DomainNft, Fees, IovConfig, wrapFees, wrapIovConfig } from "../types";
 import {
   getAccountTransferQuery,
   getDomainRenewsQuery,
@@ -64,8 +64,7 @@ export function setupStarnameExtension(base: LcdClient): StarnameExtension {
       queryDomainInfo: async (name: string) =>
         (await base.post("/starname/query/domainInfo", { name })).result.domain as DomainNft,
       queryFees: getFees(base),
-      queryConfiguration: async () =>
-        (await base.post("/configuration/query/configuration", {})).result.configuration as IovConfig,
+      queryConfiguration: getConfiguration(base),
     },
   };
 }
@@ -74,6 +73,12 @@ const getFees = (base: LcdClient) => async (): Promise<Fees> => {
   const rawFees = (await base.post("/configuration/query/fees", {})).result.fees;
 
   return wrapFees(rawFees);
+};
+
+const getConfiguration = (base: LcdClient) => async (): Promise<IovConfig> => {
+  const rawConfig = (await base.post("/configuration/query/configuration", {})).result.configuration;
+
+  return wrapIovConfig(rawConfig);
 };
 
 const getStarnameData = <T extends Msg>(

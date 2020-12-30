@@ -1,5 +1,7 @@
 import { Decimal } from "@cosmjs/math";
 
+export const iovFractionDigits = 18;
+
 export interface Fees {
   readonly fee_coin_denom: string;
   readonly fee_coin_price: Decimal;
@@ -51,25 +53,29 @@ export interface FeesRaw {
 export function wrapFees(fees: FeesRaw): Fees {
   return {
     fee_coin_denom: fees.fee_coin_denom,
-    fee_coin_price: Decimal.fromAtomics(fees.fee_coin_price, 18),
-    fee_default: Decimal.fromAtomics(fees.fee_default, 18),
-    register_account_closed: Decimal.fromAtomics(fees.register_account_closed, 18),
-    register_account_open: Decimal.fromAtomics(fees.register_account_open, 18),
-    transfer_account_closed: Decimal.fromAtomics(fees.transfer_account_closed, 18),
-    transfer_account_open: Decimal.fromAtomics(fees.transfer_account_open, 18),
-    replace_account_resources: Decimal.fromAtomics(fees.replace_account_resources, 18),
-    add_account_certificate: Decimal.fromAtomics(fees.add_account_certificate, 18),
-    del_account_certificate: Decimal.fromAtomics(fees.del_account_certificate, 18),
-    set_account_metadata: Decimal.fromAtomics(fees.set_account_metadata, 18),
-    register_domain_1: Decimal.fromAtomics(fees.register_domain_1, 18),
-    register_domain_2: Decimal.fromAtomics(fees.register_domain_2, 18),
-    register_domain_3: Decimal.fromAtomics(fees.register_domain_3, 18),
-    register_domain_4: Decimal.fromAtomics(fees.register_domain_4, 18),
-    register_domain_5: Decimal.fromAtomics(fees.register_domain_5, 18),
-    register_domain_default: Decimal.fromAtomics(fees.register_domain_default, 18),
-    register_open_domain_multiplier: Decimal.fromAtomics(fees.register_open_domain_multiplier, 18),
-    transfer_domain_closed: Decimal.fromAtomics(fees.transfer_domain_closed, 18),
-    transfer_domain_open: Decimal.fromAtomics(fees.transfer_domain_open, 18),
-    renew_domain_open: Decimal.fromAtomics(fees.renew_domain_open, 18),
+    fee_coin_price: getIovDecimal(fees.fee_coin_price),
+    fee_default: getIovDecimal(fees.fee_default),
+    register_account_closed: getIovDecimal(fees.register_account_closed),
+    register_account_open: getIovDecimal(fees.register_account_open),
+    transfer_account_closed: getIovDecimal(fees.transfer_account_closed),
+    transfer_account_open: getIovDecimal(fees.transfer_account_open),
+    replace_account_resources: getIovDecimal(fees.replace_account_resources),
+    add_account_certificate: getIovDecimal(fees.add_account_certificate),
+    del_account_certificate: getIovDecimal(fees.del_account_certificate),
+    set_account_metadata: getIovDecimal(fees.set_account_metadata),
+    register_domain_1: getIovDecimal(fees.register_domain_1),
+    register_domain_2: getIovDecimal(fees.register_domain_2),
+    register_domain_3: getIovDecimal(fees.register_domain_3),
+    register_domain_4: getIovDecimal(fees.register_domain_4),
+    register_domain_5: getIovDecimal(fees.register_domain_5),
+    register_domain_default: getIovDecimal(fees.register_domain_default),
+    register_open_domain_multiplier: getIovDecimal(fees.register_open_domain_multiplier),
+    transfer_domain_closed: getIovDecimal(fees.transfer_domain_closed),
+    transfer_domain_open: getIovDecimal(fees.transfer_domain_open),
+    renew_domain_open: getIovDecimal(fees.renew_domain_open),
   };
+}
+
+function getIovDecimal(amount: string): Decimal {
+  return Decimal.fromUserInput(amount, iovFractionDigits);
 }
