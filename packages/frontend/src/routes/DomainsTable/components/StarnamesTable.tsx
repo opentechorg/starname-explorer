@@ -3,7 +3,6 @@ import { DomainType, Starname } from "@starname-explorer/shared";
 import React from "react";
 
 import Avatar from "../../../components/Avatar";
-import Box from "../../../components/Box";
 import Link from "../../../components/Link";
 import Table from "../../../components/Table";
 import TableBody from "../../../components/TableBody";

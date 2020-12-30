@@ -1,4 +1,5 @@
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -15,12 +16,14 @@ interface Props {
   readonly handleAgree: () => void;
   readonly open: boolean;
   readonly title: string;
+  readonly loading?: boolean;
 }
 
 export const PriceDialog: React.FunctionComponent<Props> = ({
   children,
   handleClose,
   handleAgree,
+  loading,
   open,
   title,
 }) => {
@@ -34,10 +37,11 @@ export const PriceDialog: React.FunctionComponent<Props> = ({
         <DialogContentText>{children}</DialogContentText>
       </DialogContent>
       <DialogActions>
+        {loading && <CircularProgress />}
         <Button autoFocus onClick={handleClose} color="secondary">
           Let other buy it
         </Button>
-        <Button onClick={handleAgree} color="primary" autoFocus>
+        <Button onClick={handleAgree} color="primary" autoFocus disabled={loading}>
           Give it to me!
         </Button>
       </DialogActions>

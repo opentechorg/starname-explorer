@@ -1,7 +1,6 @@
 import { isBroadcastTxFailure } from "@cosmjs/launchpad";
-import { Decimal, Uint32 } from "@cosmjs/math";
 import { Color } from "@material-ui/core/Alert";
-import { Domain, Fees } from "@starname-explorer/shared";
+import { Domain } from "@starname-explorer/shared";
 import React from "react";
 import { useSelector } from "react-redux";
 
@@ -21,11 +20,19 @@ interface SnackbarProps {
   readonly severity: Color;
 }
 
+interface BuyAssetState {
+  readonly show: boolean;
+  readonly fee?: number;
+  readonly domain?: Domain;
+  readonly loading?: boolean;
+}
+
 const DomainsTable: React.FunctionComponent = (): JSX.Element => {
   const fees = useSelector((state: RootState) => state.fees.data);
-  const [buyAsset, setAssetToBuy] = React.useState<{ show: boolean; fee?: number; domain?: Domain }>({
+  const [buyAsset, setAssetToBuy] = React.useState<BuyAssetState>({
     show: false,
   });
+  const [isTxProcessing, SetTxProcessing] = React.useState(false);
 
   const [snackbar, setSnackbar] = React.useState<SnackbarProps>({
     open: false,
@@ -72,6 +79,7 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
 
   const handleClose = (): void => {
     setAssetToBuy({ show: false });
+    SetTxProcessing(false);
   };
 
   const onBuyDomain = async (domain: Domain): Promise<void> => {
@@ -87,6 +95,7 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
   };
 
   const proceedToPayment = async (domain: Domain): Promise<void> => {
+    SetTxProcessing(true);
     try {
       const txConnection = await TxConnection.init();
       const result = await txConnection.registerDomain(domain.domain);
@@ -138,6 +147,7 @@ const DomainsTable: React.FunctionComponent = (): JSX.Element => {
         open={buyAsset.show}
         handleClose={handleClose}
         handleAgree={handleAgree}
+        loading={isTxProcessing}
         title="Are you ready to buy this starname?"
       >
         You can buy <strong>*{buyAsset.domain?.domain}</strong> starname for only{" "}
